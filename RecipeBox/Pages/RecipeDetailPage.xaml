@@ -3,12 +3,108 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:RecipeBox.Pages"
+    xmlns:recipeBox="using:RecipeBox"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    DataContext="{x:Bind item}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <RelativePanel>
+            <TextBlock x:Name="TitleTextBlock" Text="{Binding Name}" Style="{StaticResource TitleTextBlockStyle}" Margin="24,0,0,24" />
+            <RatingControl x:Name="RecipeDetailRating" Value="{Binding Rating}" Margin="24,0,0,0" HorizontalAlignment="Left" RelativePanel.Below="TitleTextBlock" />
+            <CommandBar x:Name="RecipeDetailCommandBar" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" RelativePanel.AlignRightWithPanel="True" OverflowButtonVisibility="Collapsed" DefaultLabelPosition="Right">
+                <AppBarButton x:Name="editRecipeButton" Tag="editRecipeButton" Icon="Edit" Label="Edit" Click="editRecipeButton_Click" />
+                <AppBarButton x:Name="printRecipeButton" Tag="printRecipeButton" Icon="Print" Label="Print" Click="printRecipeButton_Click" />
+            </CommandBar>
 
+            <RelativePanel x:Name="RecipeDetailsPanel" RelativePanel.Below="RecipeDetailRating">
+                <StackPanel x:Name="RecipeDetailsPanelLeft" Margin="20" >
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="Description: " />
+                        <TextBlock x:Name="RecipeDetailDescription" Text="{Binding Description}" Margin="5,0,0,0" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,24,0,0" >
+                        <TextBlock Text="Categories:" />
+                        <TextBlock x:Name="RecipeDetailCategories" Text="{Binding Categories}" Margin="5,0,0,0" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,24,0,0" >
+                        <TextBlock Text="Cuisine:" />
+                        <TextBlock x:Name="RecipeDetailCuisine" Text="{Binding Cuisines}" Margin="5,0,0,0" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,24,0,0">
+                        <TextBlock Text="Servings:" />
+                        <TextBlock x:Name="RecipeDetailServings" Text="{Binding Servings}" Margin="5,0,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel x:Name="RecipeDetailsPanelRight" Margin="20" RelativePanel.RightOf="RecipeDetailsPanelLeft" >
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="Prep Time:" />
+                        <TextBlock x:Name="RecipeDetailPrepTime" Text="{Binding PrepTime}" Margin="5,0,0,0" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,24,0,0" >
+                        <TextBlock Text="Cook Time:" />
+                        <TextBlock x:Name="RecipeDetailCookTime" Text="{Binding CookTime}" Margin="5,0,0,0" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,24,0,0">
+                        <TextBlock Text="Total Time:" />
+                        <TextBlock x:Name="RecipeDetailTotalTime" Text="{Binding TotalTime}" Margin="5,0,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+            </RelativePanel>
+
+            <RelativePanel x:Name="RecipeIngredientsPanel" Margin="20" RelativePanel.Below="RecipeDetailsPanel">
+                <TextBlock x:Name="RecipeIngredientsTitleTextBlock" Text="Ingredients" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
+
+                <ListView x:Name="RecipeIngredientsListView" ItemsSource="{Binding Ingredients}" SelectionMode="None" RelativePanel.Below="RecipeIngredientsTitleTextBlock">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:Name="RecipeIngredientsSingleLineDataTemplate" x:DataType="recipeBox:Ingredient">
+                            <StackPanel Orientation="Horizontal" Height="44" Padding="12" AutomationProperties.Name="{x:Bind Name}">
+                                <TextBlock x:Name="RecipeIngredientsListViewTextBlock" Text="{Binding}" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </RelativePanel>
+
+            <RelativePanel x:Name="RecipeInstructionsPanel" Margin="20" RelativePanel.RightOf="RecipeIngredientsPanel" RelativePanel.Below="RecipeDetailsPanel" >
+                <TextBlock x:Name="RecipeInstructionsTitleTextBlock" Text="Instructions" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
+
+                <ListView x:Name="RecipeInstructionsListView" ItemsSource="{Binding Instructions}" SelectionMode="None" RelativePanel.Below="RecipeInstructionsTitleTextBlock">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:Name="RecipeInstructionsSingleLineDataTemplate" x:DataType="recipeBox:RecipeInstruction">
+                            <StackPanel Orientation="Horizontal" Height="44" Padding="12" AutomationProperties.Name="{x:Bind Instruction}">
+                                <TextBlock x:Name="RecipeNotesListViewTextBlock" Text="{Binding}" VerticalAlignment="Center" Margin="12,0,0,0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </RelativePanel>
+
+            <RelativePanel x:Name="RecipeNotesPanel" Margin="20" RelativePanel.Below="RecipeIngredientsPanel">
+                <TextBlock x:Name="RecipeNotessTitleTextBlock" Text="Notes" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
+
+                <ListView x:Name="RecipeNotesListView" ItemsSource="{Binding Notes}" SelectionMode="None" RelativePanel.Below="RecipeNotessTitleTextBlock">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:Name="RecipeNotesSingleLineDataTemplate" x:DataType="recipeBox:RecipeNote">
+                            <StackPanel Orientation="Horizontal" Height="44" Padding="12" AutomationProperties.Name="{x:Bind Note}">
+                                <TextBlock x:Name="RecipeNotesListViewTextBlock" Text="{x:Bind x:String.Format('&#x2022; {0}', Note)}" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </RelativePanel>
+
+        </RelativePanel>
     </Grid>
 </Page>

@@ -102,5 +102,15 @@ namespace RecipeBox.Pages
 
         #region Event Handlers
         #endregion
+
+        private void editRecipeButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void printRecipeButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
