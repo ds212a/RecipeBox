@@ -135,22 +135,30 @@ namespace RecipeBox.Pages
             string guid = Guid.NewGuid().ToString();
             Recipe newRecipe = new Recipe();
             newRecipe.Id = guid;
-            newRecipe.Name = "Test Recipe";
-            newRecipe.Description = "Recipe Description";
-            newRecipe.PrepTime = "20 minutes";
-            newRecipe.CookTime = "30 minutes";
-            newRecipe.TotalTime = "50 minutes";
+            newRecipe.Name = "Sambal Rebus - Boiled Chili Sauce";
+            newRecipe.Description = "Whenever you make Indonesian soto (soups) at home, you must make sambal rebus to enjoy with your soto. Soto doesn't feel complete without this sambal.";
+            newRecipe.PrepTime = "10 minutes";
+            newRecipe.CookTime = "10 minutes";
+            newRecipe.TotalTime = "20 minutes";
             newRecipe.Servings = 6;
             newRecipe.Rating = 0;
-            newRecipe.Url = "myUrl";
-            newRecipe.Categories.Add("Main Meal");
+            newRecipe.Url = "https://dailycookingquest.com/cards/sate-babi-indonesian-pork-satay.html";
+            newRecipe.Categories.Add("Sauce");
+            newRecipe.Categories.Add("Vegetarian");
             newRecipe.Cuisines.Add("Indonesian");
-            newRecipe.Ingredients.Add(new Ingredient(Guid.NewGuid().ToString(), 1, "Ingredient 1", 1, Ingredient.UnitOfMeasurements.Item));
-            newRecipe.Ingredients.Add(new Ingredient(Guid.NewGuid().ToString(), 2, "Ingredient 2", 2, Ingredient.UnitOfMeasurements.Item));
-            newRecipe.Instructions.Add(new RecipeInstruction(1, "Instruction 1"));
-            newRecipe.Instructions.Add(new RecipeInstruction(2, "Instruction 2"));
-            newRecipe.Notes.Add(new RecipeNote(1, "Note"));
-            newRecipe.Images.Add(new RecipeImage("originalPathToImage.jpg", "localPathToImage.jpg"));
+
+            newRecipe.Ingredients.Add(new Ingredient(Guid.NewGuid().ToString(), 1, "red Thai chilies (Indonesian: cabe rawit merah), remove the seeds (*)", 20, Ingredient.UnitOfMeasurements.Item));
+            newRecipe.Ingredients.Add(new Ingredient(Guid.NewGuid().ToString(), 2, "shallots (Indonesian: bawang merah), peeled", 2, Ingredient.UnitOfMeasurements.Item));
+            newRecipe.Ingredients.Add(new Ingredient(Guid.NewGuid().ToString(), 2, "water", 2, Ingredient.UnitOfMeasurements.Milliliters));
+            newRecipe.Ingredients.Add(new Ingredient(Guid.NewGuid().ToString(), 2, "salt", 1, Ingredient.UnitOfMeasurements.Teaspoon));
+            newRecipe.Ingredients.Add(new Ingredient(Guid.NewGuid().ToString(), 2, "sugar", 1, Ingredient.UnitOfMeasurements.Teaspoon));
+
+            newRecipe.Instructions.Add(new RecipeInstruction(1, "In a sauce pan, boil together chilies, shallots, and water until the vegetables are soft and the water is reduced by 50%."));
+            newRecipe.Instructions.Add(new RecipeInstruction(2, "Transfer chilies, shallots, and water to a food processor or blender, season with salt and sugar. Process until smooth."));
+
+            newRecipe.Notes.Add(new RecipeNote(1, "(*) Do not remove the seeds for a super fiery chili sauce."));
+
+            newRecipe.Images.Add(new RecipeImage("https://dailycookingquest.com/img/2014/04/sambal_rebus.jpg", "sambal_rebus.jpg"));
 
             StorageFolder recipesFolder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("Recipes", CreationCollisionOption.OpenIfExists);
             StorageFolder recipeFolder = await recipesFolder.CreateFolderAsync(newRecipe.Id, CreationCollisionOption.OpenIfExists);
