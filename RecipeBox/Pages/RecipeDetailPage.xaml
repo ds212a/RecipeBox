@@ -16,7 +16,7 @@
     <Grid>
         <RelativePanel>
             <TextBlock x:Name="TitleTextBlock" Text="{Binding Name}" Style="{StaticResource TitleTextBlockStyle}" Margin="24,0,0,24" />
-            <RatingControl x:Name="RecipeDetailRating" Value="{Binding Rating}" Margin="24,0,0,0" HorizontalAlignment="Left" RelativePanel.Below="TitleTextBlock" />
+            <RatingControl x:Name="RecipeDetailRating" Value="{Binding Rating}" IsReadOnly="True" Margin="24,0,0,0" HorizontalAlignment="Left" RelativePanel.Below="TitleTextBlock" />
             <CommandBar x:Name="RecipeDetailCommandBar" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" RelativePanel.AlignRightWithPanel="True" OverflowButtonVisibility="Collapsed" DefaultLabelPosition="Right">
                 <AppBarButton x:Name="editRecipeButton" Tag="editRecipeButton" Icon="Edit" Label="Edit" Click="editRecipeButton_Click" />
                 <AppBarButton x:Name="printRecipeButton" Tag="printRecipeButton" Icon="Print" Label="Print" Click="printRecipeButton_Click" />
@@ -26,7 +26,7 @@
                 <StackPanel x:Name="RecipeDetailsPanelLeft" Margin="20" >
                     <StackPanel Orientation="Horizontal" >
                         <TextBlock Text="Description: " />
-                        <TextBlock x:Name="RecipeDetailDescription" Text="{Binding Description}" Margin="5,0,0,0" />
+                        <TextBlock x:Name="RecipeDetailDescription" Text="{Binding Description}" TextWrapping="Wrap" Width="400" Margin="5,0,0,0" />
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Margin="0,24,0,0" >
@@ -69,8 +69,8 @@
                 <ListView x:Name="RecipeIngredientsListView" ItemsSource="{Binding Ingredients}" SelectionMode="None" RelativePanel.Below="RecipeIngredientsTitleTextBlock">
                     <ListView.ItemTemplate>
                         <DataTemplate x:Name="RecipeIngredientsSingleLineDataTemplate" x:DataType="recipeBox:Ingredient">
-                            <StackPanel Orientation="Horizontal" Height="44" Padding="12" AutomationProperties.Name="{x:Bind Name}">
-                                <TextBlock x:Name="RecipeIngredientsListViewTextBlock" Text="{Binding}" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
+                            <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Name}">
+                                <TextBlock x:Name="RecipeIngredientsListViewTextBlock" Text="{Binding}" TextWrapping="Wrap" Width="400" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -83,8 +83,8 @@
                 <ListView x:Name="RecipeInstructionsListView" ItemsSource="{Binding Instructions}" SelectionMode="None" RelativePanel.Below="RecipeInstructionsTitleTextBlock">
                     <ListView.ItemTemplate>
                         <DataTemplate x:Name="RecipeInstructionsSingleLineDataTemplate" x:DataType="recipeBox:RecipeInstruction">
-                            <StackPanel Orientation="Horizontal" Height="44" Padding="12" AutomationProperties.Name="{x:Bind Instruction}">
-                                <TextBlock x:Name="RecipeNotesListViewTextBlock" Text="{Binding}" VerticalAlignment="Center" Margin="12,0,0,0"/>
+                            <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Instruction}">
+                                <TextBlock x:Name="RecipeNotesListViewTextBlock" Text="{Binding}" TextWrapping="Wrap" Width="400" VerticalAlignment="Center" Margin="12,0,0,0"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -97,8 +97,8 @@
                 <ListView x:Name="RecipeNotesListView" ItemsSource="{Binding Notes}" SelectionMode="None" RelativePanel.Below="RecipeNotessTitleTextBlock">
                     <ListView.ItemTemplate>
                         <DataTemplate x:Name="RecipeNotesSingleLineDataTemplate" x:DataType="recipeBox:RecipeNote">
-                            <StackPanel Orientation="Horizontal" Height="44" Padding="12" AutomationProperties.Name="{x:Bind Note}">
-                                <TextBlock x:Name="RecipeNotesListViewTextBlock" Text="{x:Bind x:String.Format('&#x2022; {0}', Note)}" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
+                            <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Note}">
+                                <TextBlock x:Name="RecipeNotesListViewTextBlock" Text="{x:Bind x:String.Format('&#x2022; {0}', Note)}" TextWrapping="Wrap" Width="400" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
