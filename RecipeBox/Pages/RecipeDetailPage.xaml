@@ -31,12 +31,36 @@
 
                     <StackPanel Orientation="Horizontal" Margin="0,24,0,0" >
                         <TextBlock Text="Categories:" />
-                        <TextBlock x:Name="RecipeDetailCategories" Text="{Binding Categories}" Margin="5,0,0,0" />
+                        <ItemsControl ItemsSource="{Binding Categories}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" VerticalAlignment="Center" Margin="5,0,0,0" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Margin="0,24,0,0" >
                         <TextBlock Text="Cuisine:" />
-                        <TextBlock x:Name="RecipeDetailCuisine" Text="{Binding Cuisines}" Margin="5,0,0,0" />
+                        <ItemsControl ItemsSource="{Binding Cuisines}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" VerticalAlignment="Center" Margin="5,0,0,0" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Margin="0,24,0,0">
