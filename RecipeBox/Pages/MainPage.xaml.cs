@@ -38,8 +38,8 @@ namespace RecipeBox.Pages
 
         #region Properties
         public ObservableCollection<Recipe> Recipes { get; } = new ObservableCollection<Recipe>();
-        public ObservableCollection<string> SuggestedCategories { get; } = new ObservableCollection<string>();
-        public ObservableCollection<string> SuggestedCuisines { get; } = new ObservableCollection<string>();
+        public static ObservableCollection<string> SuggestedCategories { get; } = new ObservableCollection<string>();
+        public static ObservableCollection<string> SuggestedCuisines { get; } = new ObservableCollection<string>();
         #endregion
 
         #region Constructors
@@ -88,6 +88,12 @@ namespace RecipeBox.Pages
                     if (file.Provider.Id == "computer")
                     {
                         Recipes.Add(await LoadRecipe(file));
+
+                        foreach (Recipe recipe in Recipes)
+                        {
+                            LoadSuggestedCategories(recipe);
+                            LoadSuggestedCuisines(recipe);
+                        }
                     }
                     else
                     {

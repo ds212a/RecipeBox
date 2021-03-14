@@ -27,7 +27,7 @@
 
                     <StackPanel x:Name="RecipeCategoriesPanel">
                         <TextBlock x:Name="RecipeCategoriesTitle" Text="Categories" Margin="0,24,0,0" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
-                        <controls:TokenizingTextBox x:Name="RecipeCategoriesTokenizingTextBox" SuggestedItemsSource="" ItemsSource="{Binding Categories, Mode=TwoWay}" PlaceholderText="Add Categories" TabIndex="2" Width="400" HorizontalAlignment="Stretch" TextMemberPath="Text" TokenDelimiter="," >
+                        <controls:TokenizingTextBox x:Name="RecipeCategoriesTokenizingTextBox" SuggestedItemsSource="{x:Bind local:MainPage.SuggestedCategories}" ItemsSource="{Binding Categories, Mode=TwoWay}" PlaceholderText="Add Categories" TabIndex="2" Width="400" HorizontalAlignment="Stretch" TextMemberPath="Text" TokenDelimiter="," >
                             <controls:TokenizingTextBox.SuggestedItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -54,7 +54,7 @@
 
                     <StackPanel x:Name="RecipeCuisinesPanel">
                         <TextBlock x:Name="RecipeCuisinesTitle" Text="Categories" Margin="0,24,0,0" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
-                        <controls:TokenizingTextBox x:Name="RecipeCuisinesTokenizingTextBox" SuggestedItemsSource="" ItemsSource="{Binding Cuisines, Mode=TwoWay}" PlaceholderText="Add Categories" TabIndex="3" Width="400" HorizontalAlignment="Stretch" TextMemberPath="Text" TokenDelimiter="," >
+                        <controls:TokenizingTextBox x:Name="RecipeCuisinesTokenizingTextBox" SuggestedItemsSource="{x:Bind local:MainPage.SuggestedCuisines}" ItemsSource="{Binding Cuisines, Mode=TwoWay}" PlaceholderText="Add Categories" TabIndex="3" Width="400" HorizontalAlignment="Stretch" TextMemberPath="Text" TokenDelimiter="," >
                             <controls:TokenizingTextBox.SuggestedItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
