@@ -25,7 +25,7 @@ namespace RecipeBox.Pages
     public sealed partial class RecipeDetailPage : Page
     {
         #region Fields
-        Recipe item;
+        Recipe recipe;
         CultureInfo culture = CultureInfo.CurrentCulture;
         #endregion
 
@@ -47,7 +47,7 @@ namespace RecipeBox.Pages
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            item = e.Parameter as Recipe;
+            recipe = e.Parameter as Recipe;
 
             if (Frame.CanGoBack)
             {
