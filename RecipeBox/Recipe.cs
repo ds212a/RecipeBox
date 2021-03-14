@@ -36,118 +36,55 @@ namespace RecipeBox
         public string Id
         {
             get => id;
-            set
-            {
-                if (id != value)
-                {
-                    id = value;
-                    OnPropertyChanged();
-                }
-            }
+            set => SetEditingProperty(ref id, value);
         }
 
         public string Name
         {
             get => name;
-            set
-            {
-                if (name != value)
-                {
-                    name = value;
-                    OnPropertyChanged();
-                }
-            }
+            set => SetEditingProperty(ref name, value);
         }
 
         public string Description
         {
             get => description;
-            set
-            {
-                if (description != value)
-                {
-                    description = value;
-                    OnPropertyChanged();
-                }
-            }
+            set => SetEditingProperty(ref description, value);
         }
 
         public string PrepTime
         {
             get => prepTime;
-            set
-            {
-                if (prepTime != value)
-                {
-                    prepTime = value;
-                    OnPropertyChanged();
-                }
-            }
+            set => SetEditingProperty(ref prepTime, value);
         }
 
         public string CookTime
         {
             get => cookTime;
-            set
-            {
-                if (cookTime != value)
-                {
-                    cookTime = value;
-                    OnPropertyChanged();
-                }
-            }
+            set => SetEditingProperty(ref cookTime, value);
         }
 
         public string TotalTime
         {
             get => totalTime;
-            set
-            {
-                if (totalTime != value)
-                {
-                    totalTime = value;
-                    OnPropertyChanged();
-                }
-            }
+            set => SetEditingProperty(ref totalTime, value);
         }
 
         public string Url
         {
             get => url;
-            set
-            {
-                if (url != value)
-                {
-                    url = value;
-                    OnPropertyChanged();
-                }
-            }
+            set => SetEditingProperty(ref url, value);
         }
 
         public uint Servings
         {
             get => servings;
-            set
-            {
-                if (servings != value)
-                {
-                    servings = value;
-                    OnPropertyChanged();
-                }
-            }
+            set => SetEditingProperty(ref servings, value);
         }
 
         public double Rating
         {
             get => rating;
-            set
-            {
-                if (rating != value)
-                {
-                    rating = value;
-                    OnPropertyChanged();
-                }
-            }
+            set => SetEditingProperty(ref rating, value);
         }
 
         [XmlArrayItem("Category")]
@@ -325,6 +262,7 @@ namespace RecipeBox
                 {
                     NeedsSaved = false;
                 }
+
                 return true;
             }
             else
