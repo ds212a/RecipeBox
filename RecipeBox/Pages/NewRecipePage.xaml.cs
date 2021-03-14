@@ -144,16 +144,6 @@ namespace RecipeBox.Pages
             recipe.Rating = RecipeRating.Value;
             recipe.Url = RecipeUrl.Text;
 
-            foreach (string category in RecipeCategories.Text.Split(','))
-            {
-                recipe.Categories.Add(category);
-            }
-
-            foreach (string cuisine in RecipeCuisines.Text.Split(','))
-            {
-                recipe.Cuisines.Add(cuisine);
-            }
-
             StorageFolder recipesFolder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("Recipes", CreationCollisionOption.OpenIfExists);
             StorageFolder recipeFolder = await recipesFolder.CreateFolderAsync(recipe.Id, CreationCollisionOption.OpenIfExists);
             StorageFile file = await recipeFolder.CreateFileAsync("recipe.xml", CreationCollisionOption.OpenIfExists);
