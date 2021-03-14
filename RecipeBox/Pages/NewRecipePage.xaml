@@ -60,8 +60,8 @@
                 <ListView x:Name="RecipeIngredientsListView" ItemsSource="{x:Bind NewRecipeIngredients}" SelectionMode="Single" RelativePanel.Below="RecipeIngredientsButtonPanel" SelectionChanged="RecipeIngredientsListView_SelectionChanged">
                     <ListView.ItemTemplate>
                         <DataTemplate x:Name="RecipeIngredientsSingleLineDataTemplate" x:DataType="recipeBox:Ingredient">
-                            <StackPanel Orientation="Horizontal" Height="44" Padding="12" AutomationProperties.Name="{x:Bind Name}">
-                                <TextBlock x:Name="RecipeIngredientsListViewTextBlock" Text="{Binding}" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
+                            <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Name}">
+                                <TextBlock x:Name="RecipeIngredientsListViewTextBlock" Text="{Binding}" TextWrapping="Wrap" Width="400" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -79,8 +79,8 @@
                 <ListView x:Name="RecipeInstructionsListView" ItemsSource="{x:Bind NewRecipeInstructions}" SelectionMode="Single" RelativePanel.Below="RecipeInstructionsButtonPanel" SelectionChanged="RecipeInstructionsListView_SelectionChanged">
                     <ListView.ItemTemplate>
                         <DataTemplate x:Name="RecipeInstructionsSingleLineDataTemplate" x:DataType="recipeBox:RecipeInstruction">
-                            <StackPanel Orientation="Horizontal" Height="44" Padding="12" AutomationProperties.Name="{x:Bind Instruction}">
-                                <TextBlock x:Name="RecipeNotesListViewTextBlock" Text="{Binding}" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
+                            <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Instruction}">
+                                <TextBlock x:Name="RecipeNotesListViewTextBlock" Text="{Binding}" TextWrapping="Wrap" Width="400" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -98,8 +98,8 @@
                 <ListView x:Name="RecipeNotesListView" ItemsSource="{x:Bind NewRecipeNotes}" SelectionMode="Single" RelativePanel.Below="RecipeNotesButtonPanel" SelectionChanged="RecipeNotesListView_SelectionChanged">
                     <ListView.ItemTemplate>
                         <DataTemplate x:Name="RecipeNotesSingleLineDataTemplate" x:DataType="recipeBox:RecipeNote">
-                            <StackPanel Orientation="Horizontal" Height="44" Padding="12" AutomationProperties.Name="{x:Bind Note}">
-                                <TextBlock x:Name="RecipeNotesListViewTextBlock" Text="{x:Bind x:String.Format('&#x2022; {0}', Note)}" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
+                            <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Note}">
+                                <TextBlock x:Name="RecipeNotesListViewTextBlock" Text="{x:Bind x:String.Format('&#x2022; {0}', Note)}" TextWrapping="Wrap" Width="400" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
