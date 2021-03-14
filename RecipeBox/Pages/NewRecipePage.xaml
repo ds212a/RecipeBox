@@ -71,7 +71,7 @@
             </RelativePanel>
 
             <RelativePanel x:Name="RecipeInstructionsPanel" Margin="20" RelativePanel.RightOf="RecipeIngredientsPanel" RelativePanel.Below="RecipeDetailsPanel" >
-                <TextBox x:Name="AddRecipeInstructionTextBox" Header="Instructions" PlaceholderText="Enter an instructions here" TabIndex="13" Width="400" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" InputScope="Text" />
+                <TextBox x:Name="AddRecipeInstructionTextBox" Header="Instructions" PlaceholderText="Enter an instructions here" TabIndex="13" Margin="0,19,0,0" Width="400" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" InputScope="Text" />
 
                 <StackPanel x:Name="RecipeInstructionsButtonPanel" Orientation="Horizontal" RelativePanel.Below="AddRecipeInstructionTextBox" RelativePanel.AlignRightWithPanel="True">
                     <AppBarButton x:Name="RecipeInstructionAddButton" Style="{StaticResource AppBarButtonRevealStyle}" Icon="Add" Label="Add instruction" Click="RecipeInstructionsAddButton_Click" />
