@@ -29,7 +29,7 @@ namespace RecipeBox.Pages
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page, INotifyPropertyChanged
+    public sealed partial class MainPage : Page
     {
         #region Fields
         public static MainPage Current = null;
@@ -187,25 +187,6 @@ namespace RecipeBox.Pages
         {
             persistedItem = e.ClickedItem as Recipe;
             Frame.Navigate(typeof(RecipeDetailPage), e.ClickedItem);
-        }
-        #endregion
-
-        #region Property Changed methods
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-        protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] String propertyName = null)
-        {
-            if (object.Equals(storage, value))
-            {
-                return false;
-            }
-            else
-            {
-                storage = value;
-                OnPropertyChanged(propertyName);
-                return true;
-            }
         }
         #endregion
     }
