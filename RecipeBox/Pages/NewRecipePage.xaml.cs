@@ -27,30 +27,14 @@ namespace RecipeBox.Pages
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class NewRecipePage : Page, INotifyPropertyChanged
+    public sealed partial class NewRecipePage : Page
     {
         #region Fields
+        Recipe recipe = null;
         private bool canNavigateWithUnsavedChanges = false;
-        private ObservableCollection<string> newRecipeCategories = new ObservableCollection<string>();
-        private ObservableCollection<string> newRecipeCuisines = new ObservableCollection<string>();
-        private ObservableCollection<Ingredient> newRecipeIngredients = new ObservableCollection<Ingredient>();
-        private ObservableCollection<RecipeInstruction> newRecipeInstructions = new ObservableCollection<RecipeInstruction>();
-        private ObservableCollection<RecipeNote> newRecipeNotes = new ObservableCollection<RecipeNote>();
-        private ObservableCollection<RecipeImage> newRecipeImages = new ObservableCollection<RecipeImage>();
         #endregion
 
         #region Properties
-        public ObservableCollection<string> NewRecipeCategories { get => newRecipeCategories; }
-
-        public ObservableCollection<string> NewRecipeCuisines { get => newRecipeCuisines; }
-
-        public ObservableCollection<Ingredient> NewRecipeIngredients { get => newRecipeIngredients; }
-
-        public ObservableCollection<RecipeInstruction> NewRecipeInstructions { get => newRecipeInstructions; }
-
-        public ObservableCollection<RecipeNote> NewRecipeNotes { get => newRecipeNotes; }
-
-        public ObservableCollection<RecipeImage> NewRecipeImages { get => newRecipeImages; }
         #endregion
 
         #region Constructors
@@ -58,44 +42,120 @@ namespace RecipeBox.Pages
         {
             InitializeComponent();
 
+            SystemNavigationManager.GetForCurrentView().BackRequested += (s, e) =>
+            {
+                if (Frame.CanGoBack)
+                {
+                    e.Handled = true;
+                    Frame.GoBack();
+                }
+            };
+
             var _enumval = Enum.GetValues(typeof(Ingredient.UnitOfMeasurements)).Cast<Ingredient.UnitOfMeasurements>();
             AddRecipeIngredientUnitOfMeasurementComboBox.ItemsSource = _enumval.ToList();
         }
         #endregion
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            recipe = e.Parameter as Recipe;
+            if (recipe == null)
+            {
+                recipe = new Recipe();
+            }
+
+            if (Frame.CanGoBack)
+            {
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+            }
+            else
+            {
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+            }
+
+            base.OnNavigatedTo(e);
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            // If the recipe has unsaved changes, we want to show a dialog
+            // that warns the user before the navigation happens
+            // To give the user a chance to view the dialog and respond,
+            // we go ahead and cancel the navigation.
+            // If the user wants to leave the page, we restart the
+            // navigation. We use the canNavigateWithUnsavedChanges field to
+            // track whether the user has been asked.
+            if (recipe != null)
+            {
+                if (recipe.NeedsSaved && !canNavigateWithUnsavedChanges)
+                {
+                    // The item has unsaved changes and we haven't shown the
+                    // dialog yet. Cancel navigation and show the dialog.
+                    e.Cancel = true;
+                    ShowSaveDialog(e);
+                }
+                else
+                {
+                    canNavigateWithUnsavedChanges = false;
+                    base.OnNavigatingFrom(e);
+                }
+            }
+            else
+            {
+                base.OnNavigatingFrom(e);
+            }
+        }
+
+        /// <summary>
+        /// Gives users a chance to save the recipe before navigating
+        /// to a different page.
+        /// </summary>
+        private async void ShowSaveDialog(NavigatingCancelEventArgs e)
+        {
+            ContentDialog saveDialog = new ContentDialog()
+            {
+                Title = "Unsaved changes",
+                Content = "You have unsaved changes that will be lost if you leave this page.",
+                PrimaryButtonText = "Leave this page",
+                SecondaryButtonText = "Stay"
+            };
+
+            ContentDialogResult result = await saveDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                // The user decided to leave the page. Restart
+                // the navigation attempt. 
+                canNavigateWithUnsavedChanges = true;
+                Frame.Navigate(e.SourcePageType, e.Parameter);
+            }
+        }
+
         #region Event Handlers
         private async void saveRecipeButton_Click(object sender, RoutedEventArgs e)
         {
             string guid = Guid.NewGuid().ToString();
-            Recipe newRecipe = new Recipe();
-            newRecipe.Id = guid;
-            newRecipe.Name = RecipeName.Text;
-            newRecipe.Description = RecipeDescription.Text;
-            newRecipe.PrepTime = RecipePrepTime.Text;
-            newRecipe.CookTime = RecipeCookTime.Text;
-            newRecipe.TotalTime = "50 minutes";
-            newRecipe.Servings = (uint)(string.IsNullOrEmpty(RecipeServings.Text) ? 0 : Convert.ToUInt16(RecipeServings.Text));
-            newRecipe.Rating = RecipeRating.Value;
-            newRecipe.Url = RecipeUrl.Text;
+            recipe.Id = guid;
+            recipe.Name = RecipeName.Text;
+            recipe.Description = RecipeDescription.Text;
+            recipe.PrepTime = RecipePrepTime.Text;
+            recipe.CookTime = RecipeCookTime.Text;
+            recipe.TotalTime = "50 minutes";
+            recipe.Servings = (uint)(string.IsNullOrEmpty(RecipeServings.Text) ? 0 : Convert.ToUInt16(RecipeServings.Text));
+            recipe.Rating = RecipeRating.Value;
+            recipe.Url = RecipeUrl.Text;
 
             foreach (string category in RecipeCategories.Text.Split(','))
             {
-                newRecipe.Categories.Add(category);
+                recipe.Categories.Add(category);
             }
 
             foreach (string cuisine in RecipeCuisines.Text.Split(','))
             {
-                newRecipe.Cuisines.Add(cuisine);
+                recipe.Cuisines.Add(cuisine);
             }
 
-
-            newRecipe.Ingredients = newRecipeIngredients;
-            newRecipe.Instructions = newRecipeInstructions;
-            newRecipe.Notes = newRecipeNotes;
-            newRecipe.Images = newRecipeImages;
-
             StorageFolder recipesFolder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("Recipes", CreationCollisionOption.OpenIfExists);
-            StorageFolder recipeFolder = await recipesFolder.CreateFolderAsync(newRecipe.Id, CreationCollisionOption.OpenIfExists);
+            StorageFolder recipeFolder = await recipesFolder.CreateFolderAsync(recipe.Id, CreationCollisionOption.OpenIfExists);
             StorageFile file = await recipeFolder.CreateFileAsync("recipe.xml", CreationCollisionOption.OpenIfExists);
 
             var serializer = new XmlSerializer(typeof(Recipe));
@@ -103,7 +163,7 @@ namespace RecipeBox.Pages
 
             using (stream)
             {
-                serializer.Serialize(stream, newRecipe);
+                serializer.Serialize(stream, recipe);
             }
 
             Frame.GoBack();
@@ -113,12 +173,12 @@ namespace RecipeBox.Pages
         {
             uint index = Convert.ToUInt16(RecipeIngredientsListView.Items.Count + 1);
             Ingredient.UnitOfMeasurements unitOfMeasurement = (Ingredient.UnitOfMeasurements)Enum.Parse(typeof(Ingredient.UnitOfMeasurements), AddRecipeIngredientUnitOfMeasurementComboBox.SelectedItem.ToString());
-            newRecipeIngredients.Add(new Ingredient(Guid.NewGuid().ToString(), index, AddRecipeIngredientQuantityTextBox.Text, Convert.ToUInt16(AddRecipeIngredientQuantityTextBox.Text), unitOfMeasurement));
+            recipe.Ingredients.Add(new Ingredient(Guid.NewGuid().ToString(), index, AddRecipeIngredientQuantityTextBox.Text, Convert.ToUInt16(AddRecipeIngredientQuantityTextBox.Text), unitOfMeasurement));
         }
 
         private void RecipeIngredientsDeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            newRecipeIngredients.RemoveAt(RecipeIngredientsListView.Items.IndexOf(RecipeIngredientsListView.SelectedItem));
+            recipe.Ingredients.RemoveAt(RecipeIngredientsListView.Items.IndexOf(RecipeIngredientsListView.SelectedItem));
         }
 
         private void RecipeIngredientsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -135,12 +195,12 @@ namespace RecipeBox.Pages
         private void RecipeInstructionsAddButton_Click(object sender, RoutedEventArgs e)
         {
             uint index = Convert.ToUInt16(RecipeInstructionsListView.Items.Count + 1);
-            newRecipeInstructions.Add(new RecipeInstruction(index, AddRecipeInstructionTextBox.Text));
+            recipe.Instructions.Add(new RecipeInstruction(index, AddRecipeInstructionTextBox.Text));
         }
 
         private void RecipeInstructionsDeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            newRecipeInstructions.RemoveAt(RecipeInstructionsListView.Items.IndexOf(RecipeInstructionsListView.SelectedItem));
+            recipe.Instructions.RemoveAt(RecipeInstructionsListView.Items.IndexOf(RecipeInstructionsListView.SelectedItem));
         }
 
         private void RecipeInstructionsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -157,12 +217,12 @@ namespace RecipeBox.Pages
         private void RecipeNotesAddButton_Click(object sender, RoutedEventArgs e)
         {
             uint index = Convert.ToUInt16(RecipeNotesListView.Items.Count + 1);
-            newRecipeNotes.Add(new RecipeNote(index, AddRecipeNoteTextBox.Text));
+            recipe.Notes.Add(new RecipeNote(index, AddRecipeNoteTextBox.Text));
         }
 
         private void RecipeNotesDeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            newRecipeNotes.RemoveAt(RecipeNotesListView.Items.IndexOf(RecipeNotesListView.SelectedItem));
+            recipe.Notes.RemoveAt(RecipeNotesListView.Items.IndexOf(RecipeNotesListView.SelectedItem));
         }
 
         private void RecipeNotesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -173,25 +233,6 @@ namespace RecipeBox.Pages
                     RecipeNoteDeleteButton.IsEnabled = true;
                 else
                     RecipeNoteDeleteButton.IsEnabled = false;
-            }
-        }
-        #endregion
-
-        #region Property Changed methods
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-        protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] String propertyName = null)
-        {
-            if (object.Equals(storage, value))
-            {
-                return false;
-            }
-            else
-            {
-                storage = value;
-                OnPropertyChanged(propertyName);
-                return true;
             }
         }
         #endregion
