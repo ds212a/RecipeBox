@@ -31,6 +31,7 @@ namespace RecipeBox.Pages
     {
         #region Fields
         Recipe recipe = null;
+        ContentDialog saveDialog = null;
         private bool canNavigateWithUnsavedChanges = false;
         #endregion
 
@@ -51,6 +52,16 @@ namespace RecipeBox.Pages
                 }
             };
 
+            saveDialog = new ContentDialog()
+            {
+                Title = "Unsaved changes",
+                Content = "You have unsaved changes that will be lost if you leave this page.",
+                PrimaryButtonText = "Leave this page",
+                SecondaryButtonText = "Stay"
+            };
+
+            saveDialog.IsEnabled = false;
+
             var _enumval = Enum.GetValues(typeof(Ingredient.UnitOfMeasurements)).Cast<Ingredient.UnitOfMeasurements>();
             AddRecipeIngredientUnitOfMeasurementComboBox.ItemsSource = _enumval.ToList();
         }
@@ -63,6 +74,8 @@ namespace RecipeBox.Pages
             {
                 recipe = new Recipe();
             }
+
+            recipe.NeedsSaved = false;
 
             if (Frame.CanGoBack)
             {
@@ -87,12 +100,13 @@ namespace RecipeBox.Pages
             // track whether the user has been asked.
             if (recipe != null)
             {
-                if (recipe.NeedsSaved && !canNavigateWithUnsavedChanges)
+                if (recipe.NeedsSaved && canNavigateWithUnsavedChanges == false)
                 {
                     // The item has unsaved changes and we haven't shown the
                     // dialog yet. Cancel navigation and show the dialog.
                     e.Cancel = true;
-                    ShowSaveDialog(e);
+                    if (saveDialog.IsEnabled == false)
+                        ShowSaveDialog(e);
                 }
                 else
                 {
@@ -112,22 +126,18 @@ namespace RecipeBox.Pages
         /// </summary>
         private async void ShowSaveDialog(NavigatingCancelEventArgs e)
         {
-            ContentDialog saveDialog = new ContentDialog()
-            {
-                Title = "Unsaved changes",
-                Content = "You have unsaved changes that will be lost if you leave this page.",
-                PrimaryButtonText = "Leave this page",
-                SecondaryButtonText = "Stay"
-            };
-
+            saveDialog.IsEnabled = true;
             ContentDialogResult result = await saveDialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
                 // The user decided to leave the page. Restart
                 // the navigation attempt. 
                 canNavigateWithUnsavedChanges = true;
+                saveDialog.IsEnabled = false;
                 Frame.Navigate(e.SourcePageType, e.Parameter);
             }
+
+            saveDialog.IsEnabled = false;
         }
 
         #region Event Handlers
@@ -137,9 +147,13 @@ namespace RecipeBox.Pages
             recipe.Id = guid;
             recipe.Name = RecipeName.Text;
             recipe.Description = RecipeDescription.Text;
-            recipe.PrepTime = RecipePrepTime.Text;
-            recipe.CookTime = RecipeCookTime.Text;
-            recipe.TotalTime = "50 minutes";
+
+            string[] prepTimeSplit = RecipePrepTime.Text.Split(':');
+            recipe.PrepTime = new TimeSpan(Convert.ToInt32(prepTimeSplit[0]), Convert.ToInt32(prepTimeSplit[1]), 0);
+            string[] cookTimeSplit = RecipeCookTime.Text.Split(':');
+            recipe.CookTime = new TimeSpan(Convert.ToInt32(cookTimeSplit[0]), Convert.ToInt32(cookTimeSplit[1]), 0);
+            recipe.TotalTime = recipe.PrepTime + recipe.CookTime;
+
             recipe.Servings = (uint)(string.IsNullOrEmpty(RecipeServings.Text) ? 0 : Convert.ToUInt16(RecipeServings.Text));
             recipe.Rating = RecipeRating.Value;
             recipe.Url = RecipeUrl.Text;

@@ -161,9 +161,9 @@ namespace RecipeBox.Pages
             newRecipe.Id = guid;
             newRecipe.Name = "Sambal Rebus - Boiled Chili Sauce";
             newRecipe.Description = "Whenever you make Indonesian soto (soups) at home, you must make sambal rebus to enjoy with your soto. Soto doesn't feel complete without this sambal.";
-            newRecipe.PrepTime = "10 minutes";
-            newRecipe.CookTime = "10 minutes";
-            newRecipe.TotalTime = "20 minutes";
+            newRecipe.PrepTime = new TimeSpan(0, 10, 0);
+            newRecipe.CookTime = new TimeSpan(0, 10, 0);
+            newRecipe.TotalTime = newRecipe.PrepTime + newRecipe.CookTime;
             newRecipe.Servings = 6;
             newRecipe.Rating = 0;
             newRecipe.Url = "https://dailycookingquest.com/cards/sate-babi-indonesian-pork-satay.html";

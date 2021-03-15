@@ -16,9 +16,9 @@ namespace RecipeBox
         private string id = string.Empty;
         private string name = string.Empty;
         private string description = string.Empty;
-        private string prepTime = string.Empty;
-        private string cookTime = string.Empty;
-        private string totalTime = string.Empty;
+        private TimeSpan prepTime = new TimeSpan();
+        private TimeSpan cookTime = new TimeSpan();
+        private TimeSpan totalTime = new TimeSpan();
         private string url = string.Empty;
         private uint servings = 0;
         private double rating = 0;
@@ -51,19 +51,19 @@ namespace RecipeBox
             set => SetEditingProperty(ref description, value);
         }
 
-        public string PrepTime
+        public TimeSpan PrepTime
         {
             get => prepTime;
             set => SetEditingProperty(ref prepTime, value);
         }
 
-        public string CookTime
+        public TimeSpan CookTime
         {
             get => cookTime;
             set => SetEditingProperty(ref cookTime, value);
         }
 
-        public string TotalTime
+        public TimeSpan TotalTime
         {
             get => totalTime;
             set => SetEditingProperty(ref totalTime, value);
@@ -254,7 +254,7 @@ namespace RecipeBox
         {
             if (SetProperty(ref storage, value, propertyName))
             {
-                if (Name != "" || Description != "" || CookTime != "" || PrepTime != "" || TotalTime != "" || Servings != 0 || Url != "" || Rating != 0)
+                if (Name != "" || Description != "" || CookTime.Equals(new TimeSpan()) == false || PrepTime.Equals(new TimeSpan()) == false || TotalTime.Equals(new TimeSpan()) == false || Servings != 0 || Url != "" || Rating != 0)
                 {
                     NeedsSaved = true;
                 }
