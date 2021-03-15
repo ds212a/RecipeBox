@@ -69,7 +69,7 @@ namespace RecipeBox.Pages
         #region Event Handlers
         private void editRecipeButton_Click(object sender, RoutedEventArgs e)
         {
-
+            Frame.Navigate(typeof(NewRecipePage), recipe);
         }
 
         private void printRecipeButton_Click(object sender, RoutedEventArgs e)
