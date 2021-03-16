@@ -174,8 +174,8 @@ namespace RecipeBox.Pages
             newRecipe.Ingredients.Add(new Ingredient(Guid.NewGuid().ToString(), 1, "red Thai chilies (Indonesian: cabe rawit merah), remove the seeds (*)", 20, Ingredient.UnitOfMeasurements.Item));
             newRecipe.Ingredients.Add(new Ingredient(Guid.NewGuid().ToString(), 2, "shallots (Indonesian: bawang merah), peeled", 2, Ingredient.UnitOfMeasurements.Item));
             newRecipe.Ingredients.Add(new Ingredient(Guid.NewGuid().ToString(), 2, "water", 2, Ingredient.UnitOfMeasurements.Milliliters));
-            newRecipe.Ingredients.Add(new Ingredient(Guid.NewGuid().ToString(), 2, "salt", 1, Ingredient.UnitOfMeasurements.Teaspoon));
-            newRecipe.Ingredients.Add(new Ingredient(Guid.NewGuid().ToString(), 2, "sugar", 1, Ingredient.UnitOfMeasurements.Teaspoon));
+            newRecipe.Ingredients.Add(new Ingredient(Guid.NewGuid().ToString(), 2, "salt", 0.25, Ingredient.UnitOfMeasurements.Teaspoon));
+            newRecipe.Ingredients.Add(new Ingredient(Guid.NewGuid().ToString(), 2, "sugar", 0.25, Ingredient.UnitOfMeasurements.Teaspoon));
 
             newRecipe.Instructions.Add(new RecipeInstruction(1, "In a sauce pan, boil together chilies, shallots, and water until the vegetables are soft and the water is reduced by 50%."));
             newRecipe.Instructions.Add(new RecipeInstruction(2, "Transfer chilies, shallots, and water to a food processor or blender, season with salt and sugar. Process until smooth."));

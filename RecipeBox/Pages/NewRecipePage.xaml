@@ -87,7 +87,7 @@
             <RelativePanel x:Name="RecipeIngredientsPanel" Margin="20" RelativePanel.Below="RecipeDetailsPanel">
                 <TextBlock x:Name="RecipeIngredientsTitleTextBlock" Text="Ingredients" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
                 <RelativePanel x:Name="RecipeIngredientPanel" RelativePanel.Below="RecipeIngredientsTitleTextBlock">
-                    <TextBox x:Name="AddRecipeIngredientQuantityTextBox" Header="Quantity" MaxLength="10" TabIndex="10" Width="65" HorizontalAlignment="Left" InputScope="NumberFullWidth" />
+                    <TextBox x:Name="AddRecipeIngredientQuantityTextBox" Header="Quantity" MaxLength="10" TabIndex="10" Width="65" HorizontalAlignment="Left" InputScope="NumberFullWidth" extensions:TextBoxRegex.Regex="^(?:[1-9]\d*(?:\.\d+)?|0\.0*[1-9]\d*)$" extensions:TextBoxRegex.ValidationMode="Forced" />
                     <ComboBox x:Name="AddRecipeIngredientUnitOfMeasurementComboBox" Header="Unit of Measurement" TabIndex="11" Margin="10,0,0,0" Width="135" HorizontalAlignment="Left" RelativePanel.RightOf="AddRecipeIngredientQuantityTextBox" />
                     <TextBox x:Name="AddRecipeIngredientNameTextBox" Header="Name" TabIndex="12" Margin="10,0,0,0" Width="180" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" InputScope="Text" RelativePanel.RightOf="AddRecipeIngredientUnitOfMeasurementComboBox" />
                 </RelativePanel>

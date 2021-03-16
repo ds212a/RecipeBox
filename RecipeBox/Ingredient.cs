@@ -45,7 +45,7 @@ namespace RecipeBox
         private string id = string.Empty;
         private uint index = 0;
         private string name = string.Empty;
-        private ushort quantity = 0;
+        private double quantity = 0.0;
         private UnitOfMeasurements unitOfMeasurement = UnitOfMeasurements.Item;
         #endregion
 
@@ -91,7 +91,7 @@ namespace RecipeBox
             }
         }
 
-        public uint Quantity
+        public double Quantity
         {
             get => quantity;
             set
@@ -124,7 +124,7 @@ namespace RecipeBox
 
         }
 
-        public Ingredient(string id, uint index, string name, uint quantity, UnitOfMeasurements unitOfMeasurement)
+        public Ingredient(string id, uint index, string name, double quantity, UnitOfMeasurements unitOfMeasurement)
         {
             Id = id;
             Index = index;

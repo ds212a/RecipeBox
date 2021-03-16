@@ -177,7 +177,7 @@ namespace RecipeBox.Pages
         {
             uint index = Convert.ToUInt16(RecipeIngredientsListView.Items.Count + 1);
             Ingredient.UnitOfMeasurements unitOfMeasurement = (Ingredient.UnitOfMeasurements)Enum.Parse(typeof(Ingredient.UnitOfMeasurements), AddRecipeIngredientUnitOfMeasurementComboBox.SelectedItem.ToString());
-            recipe.Ingredients.Add(new Ingredient(Guid.NewGuid().ToString(), index, AddRecipeIngredientQuantityTextBox.Text, Convert.ToUInt16(AddRecipeIngredientQuantityTextBox.Text), unitOfMeasurement));
+            recipe.Ingredients.Add(new Ingredient(Guid.NewGuid().ToString(), index, AddRecipeIngredientNameTextBox.Text, Convert.ToDouble(AddRecipeIngredientQuantityTextBox.Text), unitOfMeasurement));
         }
 
         private void RecipeIngredientsDeleteButton_Click(object sender, RoutedEventArgs e)
