@@ -75,7 +75,6 @@
                     <RelativePanel x:Name="RecipeTimePanel">
                         <TextBox x:Name="RecipePrepTime" Header="Prep Time" TabIndex="5" Margin="0,24,0,0" Width="70" HorizontalAlignment="Left" InputScope="NumberFullWidth" extensions:TextBoxMask.CustomMask="5:[0-5]" extensions:TextBoxMask.Mask="99:59" />
                         <TextBox x:Name="RecipeCookTime" Header="Cook Time" TabIndex="6" Margin="24,24,0,0" Width="70" HorizontalAlignment="Left" InputScope="NumberFullWidth" extensions:TextBoxMask.CustomMask="5:[0-5]" extensions:TextBoxMask.Mask="99:59" RelativePanel.RightOf="RecipePrepTime" />
-                        <TextBox x:Name="RecipeTotalTime" Header="Total Time" TabIndex="7" Margin="24,24,0,0" Width="70" HorizontalAlignment="Left" InputScope="NumberFullWidth" extensions:TextBoxMask.CustomMask="5:[0-5]" extensions:TextBoxMask.Mask="99:59" RelativePanel.RightOf="RecipeCookTime" />
                     </RelativePanel>
                     <RelativePanel x:Name="RecipeRatingPanel" Margin="0,24,0,0" >
                         <TextBlock x:Name="RecipeRatingsLabel" Text="Rating" />
