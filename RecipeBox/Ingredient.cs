@@ -45,7 +45,7 @@ namespace RecipeBox
         private string id = string.Empty;
         private uint index = 0;
         private string name = string.Empty;
-        private uint quantity = 0;
+        private ushort quantity = 0;
         private UnitOfMeasurements unitOfMeasurement = UnitOfMeasurements.Item;
         #endregion
 
