@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:RecipeBox.Pages"
     xmlns:recipeBox="using:RecipeBox"
+    xmlns:converters="using:RecipeBox.Converters"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
     xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
@@ -71,19 +72,23 @@
                 </StackPanel>
 
                 <StackPanel x:Name="RecipeDetailsPanelRight" Margin="20" RelativePanel.RightOf="RecipeDetailsPanelLeft" >
+                    <StackPanel.Resources>
+                        <converters:TimeSpanToStringConverter x:Key="converters:TimeSpanToStringConverter"/>
+                    </StackPanel.Resources>
+                    
                     <StackPanel Orientation="Horizontal" >
                         <TextBlock Text="Prep Time:" />
-                        <TextBlock x:Name="RecipeDetailPrepTime" Text="{Binding PrepTime}" Margin="5,0,0,0" />
+                        <TextBlock x:Name="RecipeDetailPrepTime" Text="{Binding PrepTime, Converter={StaticResource converters:TimeSpanToStringConverter}}" Margin="5,0,0,0" />
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Margin="0,24,0,0" >
                         <TextBlock Text="Cook Time:" />
-                        <TextBlock x:Name="RecipeDetailCookTime" Text="{Binding CookTime}" Margin="5,0,0,0" />
+                        <TextBlock x:Name="RecipeDetailCookTime" Text="{Binding CookTime, Converter={StaticResource converters:TimeSpanToStringConverter}}" Margin="5,0,0,0" />
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Margin="0,24,0,0">
                         <TextBlock Text="Total Time:" />
-                        <TextBlock x:Name="RecipeDetailTotalTime" Text="{Binding TotalTime}" Margin="5,0,0,0"/>
+                        <TextBlock x:Name="RecipeDetailTotalTime" Text="{Binding TotalTime, Converter={StaticResource converters:TimeSpanToStringConverter}}" Margin="5,0,0,0"/>
                     </StackPanel>
                 </StackPanel>
             </RelativePanel>

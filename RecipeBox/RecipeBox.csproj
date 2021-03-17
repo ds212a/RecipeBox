@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\TimeSpanToStringConverter.cs" />
     <Compile Include="Ingredient.cs" />
     <Compile Include="Pages\NewRecipePage.xaml.cs">
       <DependentUpon>NewRecipePage.xaml</DependentUpon>
