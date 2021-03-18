@@ -100,7 +100,11 @@
                     <ListView.ItemTemplate>
                         <DataTemplate x:Name="RecipeIngredientsSingleLineDataTemplate" x:DataType="recipeBox:Ingredient">
                             <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Name}">
-                                <TextBlock x:Name="RecipeIngredientsListViewTextBlock" Text="{Binding}" TextWrapping="Wrap" Width="400" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
+                                <StackPanel.Resources>
+                                    <converters:IngredientToStringConverter x:Key="converters:IngredientToStringConverter"/>
+                                </StackPanel.Resources>
+                                
+                                <TextBlock x:Name="RecipeIngredientsListViewTextBlock" Text="{Binding Converter={StaticResource converters:IngredientToStringConverter}}" TextWrapping="Wrap" Width="400" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
