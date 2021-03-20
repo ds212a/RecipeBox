@@ -1,6 +1,8 @@
 ﻿using Microsoft.Toolkit.Uwp.Helpers;
+using RecipeBox.Services.Printing;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -30,7 +32,7 @@ namespace RecipeBox.Pages
         #region Fields
         Recipe recipe;
         CultureInfo culture = CultureInfo.CurrentCulture;
-        private PrintHelper printHelper;
+        private readonly PrintServiceProvider _printServiceProvider = new PrintServiceProvider();
         #endregion
 
         #region Constructors
@@ -46,6 +48,8 @@ namespace RecipeBox.Pages
                     Frame.GoBack();
                 }
             };
+
+            _printServiceProvider.StatusChanged += PrintServiceProvider_StatusChanged;
         }
         #endregion
 
@@ -67,12 +71,8 @@ namespace RecipeBox.Pages
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
+            _printServiceProvider.UnregisterForPrinting();
             base.OnNavigatingFrom(e);
-        }
-
-        private void ReleasePrintHelper()
-        {
-            printHelper.Dispose();
         }
 
         #region Event Handlers
@@ -81,50 +81,23 @@ namespace RecipeBox.Pages
             Frame.Navigate(typeof(NewRecipePage), recipe);
         }
 
-        private async void printRecipeButton_Click(object sender, RoutedEventArgs e)
+        private void printRecipeButton_Click(object sender, RoutedEventArgs e)
         {
-            // Provide an invisible container
-            printHelper = new PrintHelper(PrintContainer);
-
-            var cont = new ContentControl();
-            cont.ContentTemplate = Resources["RecipePrintTemplate"] as DataTemplate;
-            cont.DataContext = recipe;
-
-            printHelper.AddFrameworkElementToPrint(cont);
-
-            printHelper.OnPrintCanceled += PrintHelper_OnPrintCanceled;
-            printHelper.OnPrintFailed += PrintHelper_OnPrintFailed;
-            printHelper.OnPrintSucceeded += PrintHelper_OnPrintSucceeded;
-
-            // Create a new PrintHelperOptions instance
-            var printHelperOptions = new PrintHelperOptions();
-
-            // Add options that you want to be displayed on the print dialog
-            printHelperOptions.AddDisplayOption(StandardPrintTaskOptions.Orientation);
-
-            // Set preselected settings
-            printHelperOptions.Orientation = PrintOrientation.Portrait;
-
-            await printHelper.ShowPrintUIAsync("Recipe Box", printHelperOptions);
+            _printServiceProvider.RegisterForPrinting(this, typeof(RecipePrintPage), DataContext);
+            _printServiceProvider.Print();
         }
 
-        private async void PrintHelper_OnPrintSucceeded()
+        private void PrintServiceProvider_StatusChanged(object sender, PrintServiceEventArgs e)
         {
-            ReleasePrintHelper();
-            var dialog = new MessageDialog("Printing done.");
-            await dialog.ShowAsync();
-        }
-
-        private async void PrintHelper_OnPrintFailed()
-        {
-            ReleasePrintHelper();
-            var dialog = new MessageDialog("Printing failed.");
-            await dialog.ShowAsync();
-        }
-
-        private void PrintHelper_OnPrintCanceled()
-        {
-            ReleasePrintHelper();
+            switch (e.Severity)
+            {
+                case EventLevel.Informational:
+                    Console.Write(e.Message);
+                    break;
+                default:
+                    Console.WriteLine(e.Message);
+                    break;
+            }
         }
         #endregion
     }

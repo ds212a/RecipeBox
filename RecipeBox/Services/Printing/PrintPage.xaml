@@ -22,43 +22,24 @@
         <Grid Grid.Row="0"
               Margin="0 0 0 8">
             <StackPanel Orientation="Horizontal">
-                <Image Source="ms-appx:///Assets/StoreLogo.png"
-                       Height="32" />
-                <TextBlock Text="XAML Brewer UWP Printing Sample"
-                           Margin="8 0 0 0"
-                           FontSize="16"
-                           VerticalAlignment="Center" />
+                <!--<Image Source="ms-appx:///Assets/StoreLogo.png" Height="32" />-->
+                <TextBlock Text="Recipe Box" Margin="8 0 0 0" FontSize="16" VerticalAlignment="Center" />
             </StackPanel>
-            <TextBlock Name="title"
-                       Foreground="Black"
-                       FontSize="16"
-                       HorizontalAlignment="Right"
-                       Text="" />
+            <TextBlock x:Name="title" Foreground="Black" FontSize="16" HorizontalAlignment="Right" Text="" />
         </Grid>
 
-        <RichTextBlock x:Name="textContent"
-                       FontSize="18"
-                       Grid.Row="1"
-                       OverflowContentTarget="{Binding ElementName=textOverflow}" />
+        <RichTextBlock x:Name="textContent" FontSize="18" Grid.Row="1" OverflowContentTarget="{Binding ElementName=textOverflow}" />
 
-        <RichTextBlockOverflow x:Name="textOverflow"
-                               Grid.Row="2" />
+        <RichTextBlockOverflow x:Name="textOverflow" Grid.Row="2" />
 
         <!-- Footer -->
         <Grid Grid.Row="3"
               Grid.Column="0"
               Margin="0 8 0 0">
             <StackPanel Orientation="Horizontal">
-                <TextBlock FontSize="16"
-                           Text="© 2016 by XAML Brewer"
-                           VerticalAlignment="Bottom" />
+                <!--<TextBlock FontSize="16" Text="© 2016 by XAML Brewer" VerticalAlignment="Bottom" />-->
             </StackPanel>
-            <TextBlock Name="pageNumber"
-                       Foreground="Black"
-                       FontSize="16"
-                       HorizontalAlignment="Right"
-                       VerticalAlignment="Bottom"
-                       Text="-#-" />
+            <TextBlock x:Name="pageNumber" Foreground="Black" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" Text="-#-" />
         </Grid>
     </Grid>
 </Page>

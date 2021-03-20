@@ -25,7 +25,7 @@ namespace RecipeBox.Services.Printing
         private void PrintManager_PrintTaskRequested(PrintManager sender, PrintTaskRequestedEventArgs e)
         {
             PrintTask printTask = null;
-            printTask = e.Request.CreatePrintTask("Recipe Box Print Recipe", sourceRequested =>
+            printTask = e.Request.CreatePrintTask("Recipe Box", sourceRequested =>
             {
                 // Print Task event handler is invoked when the print job is completed.
                 printTask.Completed += async (s, args) =>

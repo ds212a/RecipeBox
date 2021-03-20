@@ -1,0 +1,147 @@
+﻿<Page x:Class="RecipeBox.Pages.RecipePrintPage"
+      xmlns:recipeBox="using:RecipeBox"
+      xmlns:converters="using:RecipeBox.Converters"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d">
+
+    <Page.Resources>
+        <converters:TimeSpanToStringConverter x:Key="converters:TimeSpanToStringConverter"/>
+    </Page.Resources>
+
+    <RichTextBlock>
+        <Paragraph TextAlignment="Left">
+            <Run Text="{Binding Name}" FontSize="28" />
+        </Paragraph>
+        <Paragraph>
+            <LineBreak />
+            <Run Text="{Binding Description}" FontSize="20" />
+        </Paragraph>
+
+        <Paragraph>
+            <LineBreak />
+            <Run Text="Catagories:" />
+            <InlineUIContainer>
+                <ItemsControl ItemsSource="{Binding Categories}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" Margin="5,0,0,0" TextWrapping="Wrap" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </InlineUIContainer>
+        </Paragraph>
+
+        <Paragraph>
+            <LineBreak />
+            <Run Text="Cuisines:" />
+        </Paragraph>
+        <Paragraph>
+            <InlineUIContainer>
+                <ItemsControl ItemsSource="{Binding Cuisines}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" VerticalAlignment="Center" Margin="5,0,0,0" TextWrapping="Wrap" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </InlineUIContainer>
+        </Paragraph>
+
+        <Paragraph>
+            <LineBreak />
+            <Run Text="Prep Time:" />
+            <Run Text="{Binding PrepTime, Converter={StaticResource converters:TimeSpanToStringConverter}}" />
+        </Paragraph>
+
+        <Paragraph>
+            <LineBreak />
+            <Run Text="Cook Time:" />
+            <Run Text="{Binding CookTime, Converter={StaticResource converters:TimeSpanToStringConverter}}" />
+        </Paragraph>
+
+        <Paragraph>
+            <LineBreak />
+            <Run Text="Total Time:" />
+            <Run Text="{Binding TotalTime, Converter={StaticResource converters:TimeSpanToStringConverter}}" />
+        </Paragraph>
+
+        <Paragraph>
+            <LineBreak />
+            <Run Text="Servings:" />
+            <Run Text="{Binding Servings}" />
+        </Paragraph>
+
+        <Paragraph>
+            <LineBreak />
+            <Run Text="Ingredients" FontSize="20" />
+        </Paragraph>
+        <Paragraph>
+            <InlineUIContainer>
+                <ItemsControl ItemsSource="{Binding Ingredients}" >
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="recipeBox:Ingredient">
+                            <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Name}">
+                                <StackPanel.Resources>
+                                    <converters:IngredientToStringConverter x:Key="converters:IngredientToStringConverter"/>
+                                </StackPanel.Resources>
+
+                                <TextBlock Text="{Binding Converter={StaticResource converters:IngredientToStringConverter}}" TextWrapping="Wrap" VerticalAlignment="Center" Margin="12,0,0,0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </InlineUIContainer>
+        </Paragraph>
+
+        <Paragraph>
+            <LineBreak />
+            <Run Text="Instructions" FontSize="20" />
+        </Paragraph>
+        <Paragraph>
+            <InlineUIContainer>
+                <ItemsControl ItemsSource="{Binding Instructions}" >
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="recipeBox:RecipeInstruction">
+                            <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Instruction}">
+                                <TextBlock Text="{Binding}" TextWrapping="Wrap" VerticalAlignment="Center" Margin="12,0,0,0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </InlineUIContainer>
+        </Paragraph>
+
+        <Paragraph>
+            <LineBreak />
+            <Run Text="Notes" FontSize="20" />
+        </Paragraph>
+        <Paragraph>
+            <InlineUIContainer>
+                <ItemsControl ItemsSource="{Binding Notes}" >
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="recipeBox:RecipeNote">
+                            <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Note}">
+                                <TextBlock Text="{x:Bind x:String.Format('&#x2022; {0}', Note)}" TextWrapping="Wrap" VerticalAlignment="Center" Margin="12,0,0,0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </InlineUIContainer>
+        </Paragraph>
+    </RichTextBlock>
+</Page>
