@@ -18,6 +18,10 @@ namespace RecipeBox.Converters
             {
                 formatted = $"{ingredient.Name}";
             }
+            else if (ingredient.UnitOfMeasurement == Ingredient.UnitOfMeasurements.Item)
+            {
+                formatted = $"\u2022 {ingredient.Quantity} {ingredient.Name}";
+            }
             else
             {
                 formatted = $"\u2022 {ingredient}";
