@@ -195,6 +195,8 @@ namespace RecipeBox.Pages
             {
                 serializer.Serialize(stream, newRecipe);
             }
+
+            await GetItemsAsync();
         }
 
         private void newRecipeButton_Click(object sender, RoutedEventArgs e)
