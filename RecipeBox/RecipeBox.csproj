@@ -136,6 +136,12 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recipe.cs" />
+    <Compile Include="Services\Printing\PrintPage.xaml.cs">
+      <DependentUpon>PrintPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Services\Printing\PrintServiceEventArgs.cs" />
+    <Compile Include="Services\Printing\PrintServiceProvider.Contracts.cs" />
+    <Compile Include="Services\Printing\PrintServiceProvider.Core.cs" />
     <Compile Include="UserControls\NewIngredientControl.xaml.cs">
       <DependentUpon>NewIngredientControl.xaml</DependentUpon>
     </Compile>
@@ -169,6 +175,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\RecipeDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Services\Printing\PrintPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
