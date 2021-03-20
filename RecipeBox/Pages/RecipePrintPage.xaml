@@ -25,6 +25,10 @@
             <Run Text="Catagories:" />
             <InlineUIContainer>
                 <ItemsControl ItemsSource="{Binding Categories}">
+                    <ItemsControl.Projection>
+                        <PlaneProjection GlobalOffsetY="4"/>
+                    </ItemsControl.Projection>
+                    
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal"/>
@@ -43,10 +47,12 @@
         <Paragraph>
             <LineBreak />
             <Run Text="Cuisines:" />
-        </Paragraph>
-        <Paragraph>
             <InlineUIContainer>
                 <ItemsControl ItemsSource="{Binding Cuisines}">
+                    <ItemsControl.Projection>
+                        <PlaneProjection GlobalOffsetY="4"/>
+                    </ItemsControl.Projection>
+                    
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal"/>
@@ -55,7 +61,7 @@
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding}" VerticalAlignment="Center" Margin="5,0,0,0" TextWrapping="Wrap" />
+                            <TextBlock Text="{Binding}" Margin="5,0,0,0" TextWrapping="Wrap" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
