@@ -6,9 +6,7 @@
     xmlns:recipeBox="using:RecipeBox"
     xmlns:converters="using:RecipeBox.Converters"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
     xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
-    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -78,9 +76,9 @@
                         <RelativePanel.Resources>
                             <converters:TimeSpanToStringConverter x:Key="converters:TimeSpanToStringConverter"/>
                         </RelativePanel.Resources>
-                        
-                        <TextBox x:Name="RecipePrepTime" Text="{Binding PrepTime, Mode=TwoWay, Converter={StaticResource converters:TimeSpanToStringConverter}}" Header="Prep Time" TabIndex="5" Margin="0,24,0,0" Width="75" HorizontalAlignment="Left" InputScope="NumberFullWidth" extensions:TextBoxMask.CustomMask="5:[0-5]" extensions:TextBoxMask.Mask="99:59" />
-                        <TextBox x:Name="RecipeCookTime" Text="{Binding CookTime, Mode=TwoWay, Converter={StaticResource converters:TimeSpanToStringConverter}}" Header="Cook Time" TabIndex="6" Margin="24,24,0,0" Width="75" HorizontalAlignment="Left" InputScope="NumberFullWidth" extensions:TextBoxMask.CustomMask="5:[0-5]" extensions:TextBoxMask.Mask="99:59" RelativePanel.RightOf="RecipePrepTime" />
+
+                        <TextBox x:Name="RecipePrepTime" Text="{Binding PrepTime, Mode=TwoWay, Converter={StaticResource converters:TimeSpanToStringConverter}}" Header="Prep Time" TabIndex="5" Margin="0,24,0,0" Width="75" HorizontalAlignment="Left" InputScope="NumberFullWidth" ui:TextBoxExtensions.CustomMask="5:[0-5]" ui:TextBoxExtensions.Mask="99:59" />
+                        <TextBox x:Name="RecipeCookTime" Text="{Binding CookTime, Mode=TwoWay, Converter={StaticResource converters:TimeSpanToStringConverter}}" Header="Cook Time" TabIndex="6" Margin="24,24,0,0" Width="75" HorizontalAlignment="Left" InputScope="NumberFullWidth" ui:TextBoxExtensions.CustomMask="5:[0-5]" ui:TextBoxExtensions.Mask="99:59" RelativePanel.RightOf="RecipePrepTime" />
                     </RelativePanel>
                     <RelativePanel x:Name="RecipeRatingPanel" Margin="0,24,0,0" >
                         <TextBlock x:Name="RecipeRatingsLabel" Text="Rating" />
@@ -92,7 +90,7 @@
             <RelativePanel x:Name="RecipeIngredientsPanel" Margin="20" RelativePanel.Below="RecipeDetailsPanel">
                 <TextBlock x:Name="RecipeIngredientsTitleTextBlock" Text="Ingredients" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
                 <RelativePanel x:Name="RecipeIngredientPanel" RelativePanel.Below="RecipeIngredientsTitleTextBlock">
-                    <TextBox x:Name="AddRecipeIngredientQuantityTextBox" Header="Quantity" MaxLength="10" TabIndex="10" Width="65" HorizontalAlignment="Left" InputScope="NumberFullWidth" extensions:TextBoxRegex.Regex="^(?:[1-9]\d*(?:\.\d+)?|0\.0*[1-9]\d*)$" extensions:TextBoxRegex.ValidationMode="Forced" />
+                    <TextBox x:Name="AddRecipeIngredientQuantityTextBox" Header="Quantity" MaxLength="10" TabIndex="10" Width="65" HorizontalAlignment="Left" InputScope="NumberFullWidth" ui:TextBoxExtensions.Regex="^(?:[1-9]\d*(?:\.\d+)?|0\.0*[1-9]\d*)$" ui:TextBoxExtensions.ValidationMode="Forced" />
                     <ComboBox x:Name="AddRecipeIngredientUnitOfMeasurementComboBox" Header="Unit of Measurement" TabIndex="11" Margin="10,0,0,0" Width="135" HorizontalAlignment="Left" RelativePanel.RightOf="AddRecipeIngredientQuantityTextBox" />
                     <TextBox x:Name="AddRecipeIngredientNameTextBox" Header="Name" TabIndex="12" Margin="10,0,0,0" Width="180" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" InputScope="Text" RelativePanel.RightOf="AddRecipeIngredientUnitOfMeasurementComboBox" />
                 </RelativePanel>
