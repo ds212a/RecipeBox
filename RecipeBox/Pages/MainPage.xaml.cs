@@ -38,6 +38,7 @@ namespace RecipeBox.Pages
 
         #region Properties
         public ObservableCollection<Recipe> Recipes { get; } = new ObservableCollection<Recipe>();
+        public ObservableCollection<Recipe> RecipesFiltered { get; private set; } = new ObservableCollection<Recipe>();
         public static ObservableCollection<string> SuggestedCategories { get; } = new ObservableCollection<string>();
         public static ObservableCollection<string> SuggestedCuisines { get; } = new ObservableCollection<string>();
         #endregion
@@ -64,6 +65,9 @@ namespace RecipeBox.Pages
             {
                 await GetItemsAsync();
             }
+
+            RecipesFiltered = new ObservableCollection<Recipe>(Recipes);
+            RecipeListView.ItemsSource = RecipesFiltered;
 
             base.OnNavigatedTo(e);
         }
@@ -153,6 +157,47 @@ namespace RecipeBox.Pages
             }
         }
 
+        // The following functions are called inside OnFilterChanged:
+
+        /* When the text in any filter is changed, perform a check on each item in the original
+        contact list to see if the item should be displayed, taking into account all three of the
+        filters currently applied. If the item passes all three checks for all three filters,
+        the function returns true and the item is added to the filtered list above. */
+        private bool Filter(Recipe recipe)
+        {
+            return recipe.Name.Contains(FilterByName.Text, StringComparison.InvariantCultureIgnoreCase) &&
+                    recipe.Categories.Any(category => category.Contains(FilterByCategory.Text, StringComparison.InvariantCultureIgnoreCase)) &&
+                    recipe.Cuisines.Any(cuisine => cuisine.Contains(FilterByCuisine.Text, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        /* These functions go through the current list being displayed (contactsFiltered), and remove
+        any items not in the filtered collection (any items that don't belong), or add back any items
+        from the original allContacts list that are now supposed to be displayed (i.e. when backspace is hit). */
+        private void Remove_NonMatching(IEnumerable<Recipe> filteredData)
+        {
+            for (int i = RecipesFiltered.Count - 1; i >= 0; i--)
+            {
+                var item = RecipesFiltered[i];
+                // If contact is not in the filtered argument list, remove it from the ListView's source.
+                if (!filteredData.Contains(item))
+                {
+                    RecipesFiltered.Remove(item);
+                }
+            }
+        }
+
+        private void AddBack_Recipe(IEnumerable<Recipe> filteredData)
+        {
+            foreach (var item in filteredData)
+            {
+                // If item in filtered list is not currently in ListView's source collection, add it back in
+                if (!RecipesFiltered.Contains(item))
+                {
+                    RecipesFiltered.Add(item);
+                }
+            }
+        }
+
         #region Event Handlers
         private async void debugNewRecipeButton_Click(object sender, RoutedEventArgs e)
         {
@@ -213,6 +258,16 @@ namespace RecipeBox.Pages
         {
             persistedItem = e.ClickedItem as Recipe;
             Frame.Navigate(typeof(RecipeDetailPage), e.ClickedItem);
+        }
+
+        // Whenever text changes in any of the filtering text boxes, the following function is called:
+        private void OnFilterChanged(object sender, TextChangedEventArgs args)
+        {
+            // This is a Linq query that selects only items that return True after being passed through
+            // the Filter function, and adds all of those selected items to filtered.
+            var filtered = Recipes.Where(recipe => Filter(recipe));
+            Remove_NonMatching(filtered);
+            AddBack_Recipe(filtered);
         }
         #endregion
     }

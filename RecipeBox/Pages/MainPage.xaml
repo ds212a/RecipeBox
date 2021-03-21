@@ -16,7 +16,14 @@
             <AppBarButton x:Name="appSettingsButton" Tag="appSettingsButton" Icon="Setting" Label="Settings" Click="appSettingsButton_Click" />
         </CommandBar>
 
-        <ListView x:Name="RecipeListView" ItemsSource="{x:Bind Recipes}" ItemClick="RecipeListView_ItemClick" IsItemClickEnabled="True" RelativePanel.Below="MainCommandBar">
+        <StackPanel x:Name="FilterByPanel" Orientation="Horizontal" RelativePanel.Below="MainCommandBar">
+            <TextBlock Margin="8,8,8,4" Style="{ThemeResource BaseTextBlockStyle}">Filter recipies by...</TextBlock>
+            <TextBox x:Name="FilterByName" Width="150" Header="Name" Margin="8" HorizontalAlignment="Left" TextChanged="OnFilterChanged"/>
+            <TextBox x:Name="FilterByCategory" Width="150" Header="Category" Margin="8" HorizontalAlignment="Left" TextChanged="OnFilterChanged"/>
+            <TextBox x:Name="FilterByCuisine" Width="150" Header="Cuisine" Margin="8" HorizontalAlignment="Left" TextChanged="OnFilterChanged"/>
+        </StackPanel>
+
+        <ListView x:Name="RecipeListView" ItemClick="RecipeListView_ItemClick" IsItemClickEnabled="True" RelativePanel.Below="FilterByPanel">
             <ListView.ItemTemplate>
                 <DataTemplate x:Name="DoubleLineDataTemplate" x:DataType="local:Recipe">
                     <StackPanel Orientation="Horizontal" Height="64" AutomationProperties.Name="{x:Bind Name}">
