@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Uwp;
+﻿using HtmlAgilityPack;
+using Microsoft.Toolkit.Uwp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -238,6 +239,15 @@ namespace RecipeBox.Pages
                 else
                     RecipeNoteDeleteButton.IsEnabled = false;
             }
+        }
+
+        private void getRecipeFromUrlButton_Click(object sender, RoutedEventArgs e)
+        {
+            var url = "https://dailycookingquest.com/cards/sate-babi-indonesian-pork-satay.html";
+            var web = new HtmlWeb();
+            var doc = web.Load(url);
+            var blah = doc.DocumentNode.SelectNodes("//head/meta").Where(node => node.Attributes["name"].Equals("description"));
+            var innerText = doc.DocumentNode.InnerText;
         }
         #endregion
     }
