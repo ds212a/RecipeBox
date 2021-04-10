@@ -172,6 +172,8 @@ namespace RecipeBox.Pages
                 serializer.Serialize(stream, recipe);
             }
 
+            recipe.NeedsSaved = false;
+
             Frame.GoBack();
         }
 
