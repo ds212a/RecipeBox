@@ -42,7 +42,7 @@ namespace RecipeBox.Converters
                 return resultSpan;
             }
 
-            throw new Exception("Unable to convert string to date time");
+            return new TimeSpan();
         }
     }
 }
