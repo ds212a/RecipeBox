@@ -58,6 +58,24 @@ namespace RecipeBox.Pages
         }
 
         #region Event Handlers
+        private async void RecipeSaveLocationBrowseButton_Click(object sender, RoutedEventArgs e)
+        {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            var folderPicker = new Windows.Storage.Pickers.FolderPicker();
+            folderPicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
+            folderPicker.FileTypeFilter.Add("*");
+
+            StorageFolder folder = await folderPicker.PickSingleFolderAsync();
+            if (folder != null)
+            {
+                StorageFolder recipesFolder = await folder.CreateFolderAsync("Recipes", CreationCollisionOption.OpenIfExists);
+                Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList.AddOrReplace("RecipeSaveLocationToken", recipesFolder);
+                localSettings.Values["RecipeSaveLocation"] = recipesFolder.Path;
+            }
+
+            if (localSettings.Values.ContainsKey("RecipeSaveLocation"))
+                RecipeSaveLocation.Text = localSettings.Values["RecipeSaveLocation"] as string;
+        }
         #endregion
     }
 }
