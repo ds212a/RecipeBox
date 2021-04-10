@@ -10,10 +10,12 @@
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <TextBlock x:Name="TitleTextBlock" Text="Recipes" Style="{StaticResource TitleTextBlockStyle}" Margin="24,0,0,24" />
-        <CommandBar x:Name="MainCommandBar" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" RelativePanel.AlignRightWithPanel="True" OverflowButtonVisibility="Collapsed" DefaultLabelPosition="Right">
-            <!--<AppBarButton x:Name="debugNewRecipeButton" Tag="debugNewRecipeButton" Icon="Add" Label="Debug New Recipe" Click="debugNewRecipeButton_Click" />-->
+        <CommandBar x:Name="MainCommandBar" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" RelativePanel.AlignRightWithPanel="True" OverflowButtonVisibility="Auto" DefaultLabelPosition="Right">
             <AppBarButton x:Name="newRecipeButton" Tag="newRecipeButton" Icon="Add" Label="New Recipe" Click="newRecipeButton_Click" />
-            <!--<AppBarButton x:Name="appSettingsButton" Tag="appSettingsButton" Icon="Setting" Label="Settings" Click="appSettingsButton_Click" />-->
+            <CommandBar.SecondaryCommands>
+                <!--<AppBarButton x:Name="debugNewRecipeButton" Tag="debugNewRecipeButton" Icon="Add" Label="Debug New Recipe" Click="debugNewRecipeButton_Click" />-->
+                <AppBarButton x:Name="appSettingsButton" Tag="appSettingsButton" Icon="Setting" Label="Settings" Click="appSettingsButton_Click" />
+            </CommandBar.SecondaryCommands>
         </CommandBar>
 
         <StackPanel x:Name="FilterByPanel" Orientation="Horizontal" RelativePanel.Below="MainCommandBar">

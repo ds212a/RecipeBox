@@ -159,7 +159,8 @@ namespace RecipeBox.Pages
             recipe.Rating = RecipeRating.Value;
             recipe.Url = RecipeUrl.Text;
 
-            StorageFolder recipesFolder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("Recipes", CreationCollisionOption.OpenIfExists);
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            StorageFolder recipesFolder = await StorageFolder.GetFolderFromPathAsync(localSettings.Values["RecipeSaveLocation"].ToString());
             StorageFolder recipeFolder = await recipesFolder.CreateFolderAsync(recipe.Id, CreationCollisionOption.OpenIfExists);
             StorageFile file = await recipeFolder.CreateFileAsync("recipe.xml", CreationCollisionOption.OpenIfExists);
 

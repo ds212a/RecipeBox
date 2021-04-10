@@ -60,6 +60,38 @@ namespace RecipeBox.Pages
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            if (localSettings.Values.ContainsKey("RecipeSaveLocation"))
+            {
+                StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(localSettings.Values["RecipeSaveLocation"].ToString());
+                Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList.AddOrReplace("RecipeSaveLocationToken", folder);
+            }
+            else
+            {
+                ContentDialog saveDialog = new ContentDialog()
+                {
+                    Title = "Set Recipe Save Location",
+                    Content = "Where would you like to save your recipes?",
+                    PrimaryButtonText = "Browse"
+                };
+
+                ContentDialogResult result = await saveDialog.ShowAsync();
+                if (result == ContentDialogResult.Primary)
+                {
+                    var folderPicker = new Windows.Storage.Pickers.FolderPicker();
+                    folderPicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
+                    folderPicker.FileTypeFilter.Add("*");
+
+                    StorageFolder folder = await folderPicker.PickSingleFolderAsync();
+                    if (folder != null)
+                    {
+                        StorageFolder recipesFolder = await folder.CreateFolderAsync("Recipes", CreationCollisionOption.OpenIfExists);
+                        Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList.AddOrReplace("RecipeSaveLocationToken", recipesFolder);
+                        localSettings.Values["RecipeSaveLocation"] = recipesFolder.Path;
+                    }
+                }
+            }
+
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
             if (Recipes.Count == 0)
             {
@@ -80,8 +112,9 @@ namespace RecipeBox.Pages
 
             try
             {
-                StorageFolder appLocalFolder = ApplicationData.Current.LocalFolder;
-                var result = appLocalFolder.CreateFileQueryWithOptions(options);
+                ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+                StorageFolder recipeFolder = await StorageFolder.GetFolderFromPathAsync(localSettings.Values["RecipeSaveLocation"].ToString());
+                var result = recipeFolder.CreateFileQueryWithOptions(options);
                 IReadOnlyList<StorageFile> recipeFiles = await result.GetFilesAsync();
                 bool unsupportedFilesFound = false;
 
@@ -229,7 +262,8 @@ namespace RecipeBox.Pages
 
             newRecipe.Images.Add(new RecipeImage("https://dailycookingquest.com/img/2014/04/sambal_rebus.jpg", "sambal_rebus.jpg"));
 
-            StorageFolder recipesFolder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("Recipes", CreationCollisionOption.OpenIfExists);
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            StorageFolder recipesFolder = await StorageFolder.GetFolderFromPathAsync(localSettings.Values["RecipeSaveLocation"].ToString());
             StorageFolder recipeFolder = await recipesFolder.CreateFolderAsync(newRecipe.Id, CreationCollisionOption.OpenIfExists);
             StorageFile file = await recipeFolder.CreateFileAsync("recipe.xml", CreationCollisionOption.OpenIfExists);
 
@@ -251,7 +285,7 @@ namespace RecipeBox.Pages
 
         private void appSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            //Frame.Navigate(typeof(AppSettingsPage));
+            Frame.Navigate(typeof(AppSettingsPage));
         }
 
         private void RecipeListView_ItemClick(object sender, ItemClickEventArgs e)
