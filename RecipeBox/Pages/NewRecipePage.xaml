@@ -80,8 +80,8 @@
                             <converters:TimeSpanToStringConverter x:Key="converters:TimeSpanToStringConverter"/>
                         </RelativePanel.Resources>
 
-                        <TextBox x:Name="RecipePrepTime" Text="{Binding PrepTime, Mode=TwoWay, Converter={StaticResource converters:TimeSpanToStringConverter}}" Header="Prep Time" TabIndex="5" Margin="0,24,0,0" Width="75" HorizontalAlignment="Left" InputScope="NumberFullWidth" ui:TextBoxExtensions.CustomMask="5:[0-5]" ui:TextBoxExtensions.Mask="99:59" />
-                        <TextBox x:Name="RecipeCookTime" Text="{Binding CookTime, Mode=TwoWay, Converter={StaticResource converters:TimeSpanToStringConverter}}" Header="Cook Time" TabIndex="6" Margin="24,24,0,0" Width="75" HorizontalAlignment="Left" InputScope="NumberFullWidth" ui:TextBoxExtensions.CustomMask="5:[0-5]" ui:TextBoxExtensions.Mask="99:59" RelativePanel.RightOf="RecipePrepTime" />
+                        <TextBox x:Name="RecipePrepTime" Text="{Binding PrepTime, Mode=TwoWay, Converter={StaticResource converters:TimeSpanToStringConverter}}" Header="Prep Time" TabIndex="5" Margin="0,24,0,0" Width="85" HorizontalAlignment="Left" InputScope="NumberFullWidth" ui:TextBoxExtensions.CustomMask="5:[0-5]" ui:TextBoxExtensions.Mask="99:59" />
+                        <TextBox x:Name="RecipeCookTime" Text="{Binding CookTime, Mode=TwoWay, Converter={StaticResource converters:TimeSpanToStringConverter}}" Header="Cook Time" TabIndex="6" Margin="24,24,0,0" Width="85" HorizontalAlignment="Left" InputScope="NumberFullWidth" ui:TextBoxExtensions.CustomMask="5:[0-5]" ui:TextBoxExtensions.Mask="99:59" RelativePanel.RightOf="RecipePrepTime" />
                     </RelativePanel>
                     <RelativePanel x:Name="RecipeRatingPanel" Margin="0,24,0,0" >
                         <TextBlock x:Name="RecipeRatingsLabel" Text="Rating" />
