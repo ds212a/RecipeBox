@@ -56,8 +56,8 @@
                     <TextBox x:Name="RecipeDescription" Text="{Binding Description, Mode=TwoWay}" Header="Description" TabIndex="1" Margin="0,24,0,0" Width="400" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" InputScope="Text" />
 
                     <StackPanel x:Name="RecipeCuisinesPanel">
-                        <TextBlock x:Name="RecipeCuisinesTitle" Text="Categories" Margin="0,24,0,0" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
-                        <controls:TokenizingTextBox x:Name="RecipeCuisinesTokenizingTextBox" SuggestedItemsSource="{x:Bind local:MainPage.SuggestedCuisines}" ItemsSource="{Binding Cuisines, Mode=TwoWay}" PlaceholderText="Add Categories" TabIndex="3" Width="400" HorizontalAlignment="Stretch" TextMemberPath="Text" TokenDelimiter="," >
+                        <TextBlock x:Name="RecipeCuisinesTitle" Text="Cuisines" Margin="0,24,0,0" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
+                        <controls:TokenizingTextBox x:Name="RecipeCuisinesTokenizingTextBox" SuggestedItemsSource="{x:Bind local:MainPage.SuggestedCuisines}" ItemsSource="{Binding Cuisines, Mode=TwoWay}" PlaceholderText="Add Cuisines" TabIndex="3" Width="400" HorizontalAlignment="Stretch" TextMemberPath="Text" TokenDelimiter="," >
                             <controls:TokenizingTextBox.SuggestedItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
