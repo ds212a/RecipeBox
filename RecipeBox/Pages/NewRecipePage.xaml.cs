@@ -34,6 +34,7 @@ namespace RecipeBox.Pages
         Recipe recipe = null;
         ContentDialog saveDialog = null;
         private bool canNavigateWithUnsavedChanges = false;
+        private bool editingRecipe = false;
         #endregion
 
         #region Properties
@@ -74,9 +75,13 @@ namespace RecipeBox.Pages
             if (recipe == null)
             {
                 recipe = new Recipe();
+                recipe.NeedsSaved = true;
             }
-
-            recipe.NeedsSaved = false;
+            else
+            {
+                editingRecipe = true;
+                recipe.NeedsSaved = false;
+            }
 
             if (Frame.CanGoBack)
             {
@@ -144,10 +149,38 @@ namespace RecipeBox.Pages
         #region Event Handlers
         private async void saveRecipeButton_Click(object sender, RoutedEventArgs e)
         {
-            string guid = Guid.NewGuid().ToString();
-            recipe.Id = guid;
+            if (editingRecipe == false)
+            {
+                string guid = Guid.NewGuid().ToString();
+                recipe.Id = guid;
+            }
+            
             recipe.Name = RecipeName.Text;
             recipe.Description = RecipeDescription.Text;
+
+            string categoriesTokenText = RecipeCategoriesTokenizingTextBox.SelectedTokenText;
+            if (string.IsNullOrEmpty(categoriesTokenText))
+            {
+                recipe.Categories.Clear();
+                recipe.Categories.Add(RecipeCategoriesTokenizingTextBox.Text);
+            }
+            else
+            {
+                recipe.Categories.Clear();
+                recipe.Categories = new ObservableCollection<string>(categoriesTokenText.Split(',').Where(s => string.IsNullOrEmpty(s) == false));
+            }
+
+            string cuisinesTokenText = RecipeCuisinesTokenizingTextBox.SelectedTokenText;
+            if (string.IsNullOrEmpty(cuisinesTokenText))
+            {
+                recipe.Cuisines.Clear();
+                recipe.Cuisines.Add(RecipeCuisinesTokenizingTextBox.Text);
+            }
+            else
+            {
+                recipe.Cuisines.Clear();
+                recipe.Cuisines = new ObservableCollection<string>(categoriesTokenText.Split(',').Where(s => string.IsNullOrEmpty(s) == false));
+            }
 
             string[] prepTimeSplit = RecipePrepTime.Text.Split(':');
             recipe.PrepTime = new TimeSpan(Convert.ToInt32(prepTimeSplit[0]), Convert.ToInt32(prepTimeSplit[1]), 0);
