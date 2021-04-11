@@ -24,11 +24,11 @@
 
                 <RelativePanel x:Name="RecipeDetailsPanel" RelativePanel.Below="NewRecipeCommandBar">
                     <StackPanel x:Name="RecipeDetailsPanelLeft" Margin="20" >
-                        <TextBox x:Name="RecipeName" Text="{Binding Name, Mode=TwoWay}" Header="Name" TabIndex="0" Padding="0,0,0,16" Margin="0,24,0,0" Width="400" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" InputScope="Text"/>
+                        <TextBox x:Name="RecipeName" Text="{Binding Name, Mode=TwoWay}" Header="Name" TabIndex="0" Padding="0,0,0,16" Margin="0,24,0,0" Width="415" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" InputScope="Text"/>
 
                         <StackPanel x:Name="RecipeCategoriesPanel">
                             <TextBlock x:Name="RecipeCategoriesTitle" Text="Categories" Margin="0,24,0,0" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
-                            <controls:TokenizingTextBox x:Name="RecipeCategoriesTokenizingTextBox" SuggestedItemsSource="{x:Bind local:MainPage.SuggestedCategories}" ItemsSource="{Binding Categories, Mode=TwoWay}" PlaceholderText="Add Categories" TabIndex="2" Width="400" HorizontalAlignment="Stretch" TextMemberPath="Text" TokenDelimiter="," >
+                            <controls:TokenizingTextBox x:Name="RecipeCategoriesTokenizingTextBox" SuggestedItemsSource="{x:Bind local:MainPage.SuggestedCategories}" ItemsSource="{Binding Categories, Mode=TwoWay}" PlaceholderText="Add Categories" TabIndex="2" Width="415" HorizontalAlignment="Stretch" TextMemberPath="Text" TokenDelimiter="," >
                                 <controls:TokenizingTextBox.SuggestedItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
