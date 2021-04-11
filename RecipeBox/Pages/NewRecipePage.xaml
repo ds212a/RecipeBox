@@ -14,147 +14,149 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <RelativePanel>
-            <TextBlock x:Name="TitleTextBlock" Text="New Recipe" Style="{StaticResource TitleTextBlockStyle}" Margin="24,0,0,24" />
-            <TextBlock Text="*" Style="{StaticResource TitleTextBlockStyle}" Visibility="{Binding NeedsSaved, Mode=OneWay}" RelativePanel.RightOf="TitleTextBlock" />
-            <CommandBar x:Name="NewRecipeCommandBar" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" RelativePanel.AlignRightWithPanel="True" OverflowButtonVisibility="Collapsed" DefaultLabelPosition="Right">
-                <AppBarButton x:Name="saveRecipeButton" Tag="saveRecipeButton" Icon="Save" Label="Save" Click="saveRecipeButton_Click" />
-            </CommandBar>
+        <ScrollViewer x:Name="NewRecipeScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" VerticalScrollMode="Auto" HorizontalScrollMode="Auto" >
+            <RelativePanel>
+                <TextBlock x:Name="TitleTextBlock" Text="New Recipe" Style="{StaticResource TitleTextBlockStyle}" Margin="24,0,0,24" />
+                <TextBlock Text="*" Style="{StaticResource TitleTextBlockStyle}" Visibility="{Binding NeedsSaved, Mode=OneWay}" RelativePanel.RightOf="TitleTextBlock" />
+                <CommandBar x:Name="NewRecipeCommandBar" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" RelativePanel.AlignRightWithPanel="True" OverflowButtonVisibility="Collapsed" DefaultLabelPosition="Right">
+                    <AppBarButton x:Name="saveRecipeButton" Tag="saveRecipeButton" Icon="Save" Label="Save" Click="saveRecipeButton_Click" />
+                </CommandBar>
 
-            <RelativePanel x:Name="RecipeDetailsPanel" RelativePanel.Below="NewRecipeCommandBar">
-                <StackPanel x:Name="RecipeDetailsPanelLeft" Margin="20" >
-                    <TextBox x:Name="RecipeName" Text="{Binding Name, Mode=TwoWay}" Header="Name" TabIndex="0" Margin="0,24,0,0" Width="400" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" InputScope="Text"/>
+                <RelativePanel x:Name="RecipeDetailsPanel" RelativePanel.Below="NewRecipeCommandBar">
+                    <StackPanel x:Name="RecipeDetailsPanelLeft" Margin="20" >
+                        <TextBox x:Name="RecipeName" Text="{Binding Name, Mode=TwoWay}" Header="Name" TabIndex="0" Margin="0,24,0,0" Width="400" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" InputScope="Text"/>
 
-                    <StackPanel x:Name="RecipeCategoriesPanel">
-                        <TextBlock x:Name="RecipeCategoriesTitle" Text="Categories" Margin="0,24,0,0" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
-                        <controls:TokenizingTextBox x:Name="RecipeCategoriesTokenizingTextBox" SuggestedItemsSource="{x:Bind local:MainPage.SuggestedCategories}" ItemsSource="{Binding Categories, Mode=TwoWay}" PlaceholderText="Add Categories" TabIndex="2" Width="400" HorizontalAlignment="Stretch" TextMemberPath="Text" TokenDelimiter="," >
-                            <controls:TokenizingTextBox.SuggestedItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding}" Padding="4,0,0,0"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </controls:TokenizingTextBox.SuggestedItemTemplate>
-                            <controls:TokenizingTextBox.TokenItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding}" Padding="4,0,0,0"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </controls:TokenizingTextBox.TokenItemTemplate>
-                        </controls:TokenizingTextBox>
+                        <StackPanel x:Name="RecipeCategoriesPanel">
+                            <TextBlock x:Name="RecipeCategoriesTitle" Text="Categories" Margin="0,24,0,0" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
+                            <controls:TokenizingTextBox x:Name="RecipeCategoriesTokenizingTextBox" SuggestedItemsSource="{x:Bind local:MainPage.SuggestedCategories}" ItemsSource="{Binding Categories, Mode=TwoWay}" PlaceholderText="Add Categories" TabIndex="2" Width="400" HorizontalAlignment="Stretch" TextMemberPath="Text" TokenDelimiter="," >
+                                <controls:TokenizingTextBox.SuggestedItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding}" Padding="4,0,0,0"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </controls:TokenizingTextBox.SuggestedItemTemplate>
+                                <controls:TokenizingTextBox.TokenItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding}" Padding="4,0,0,0"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </controls:TokenizingTextBox.TokenItemTemplate>
+                            </controls:TokenizingTextBox>
+                        </StackPanel>
+
+                        <TextBox x:Name="RecipeServings" Text="{Binding Servings, Mode=TwoWay}" Header="Number of servings" TabIndex="4" Margin="0,24,0,0" MaxLength="10" Width="125" HorizontalAlignment="Left" InputScope="NumberFullWidth" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox x:Name="RecipeUrl" Text="{Binding Url, Mode=TwoWay}" Header="Url" TabIndex="8" Margin="0,24,0,0" Width="350" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" InputScope="Text" />
+                            <AppBarButton x:Name="getRecipeFromUrlButton" Tag="getRecipeFromUrlButton" Icon="Import" Label="Import" Click="getRecipeFromUrlButton_Click" Margin="0,24,0,0" />
+                        </StackPanel>
                     </StackPanel>
 
-                    <TextBox x:Name="RecipeServings" Text="{Binding Servings, Mode=TwoWay}" Header="Number of servings" TabIndex="4" Margin="0,24,0,0" MaxLength="10" Width="125" HorizontalAlignment="Left" InputScope="NumberFullWidth" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox x:Name="RecipeUrl" Text="{Binding Url, Mode=TwoWay}" Header="Url" TabIndex="8" Margin="0,24,0,0" Width="350" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" InputScope="Text" />
-                        <AppBarButton x:Name="getRecipeFromUrlButton" Tag="getRecipeFromUrlButton" Icon="Import" Label="Import" Click="getRecipeFromUrlButton_Click" Margin="0,24,0,0" />
+                    <StackPanel x:Name="RecipeDetailsPanelRight" Margin="20" RelativePanel.RightOf="RecipeDetailsPanelLeft" >
+                        <TextBox x:Name="RecipeDescription" Text="{Binding Description, Mode=TwoWay}" Header="Description" TabIndex="1" Margin="0,24,0,0" Width="400" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" InputScope="Text" />
+
+                        <StackPanel x:Name="RecipeCuisinesPanel">
+                            <TextBlock x:Name="RecipeCuisinesTitle" Text="Cuisines" Margin="0,24,0,0" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
+                            <controls:TokenizingTextBox x:Name="RecipeCuisinesTokenizingTextBox" SuggestedItemsSource="{x:Bind local:MainPage.SuggestedCuisines}" ItemsSource="{Binding Cuisines, Mode=TwoWay}" PlaceholderText="Add Cuisines" TabIndex="3" Width="400" HorizontalAlignment="Stretch" TextMemberPath="Text" TokenDelimiter="," >
+                                <controls:TokenizingTextBox.SuggestedItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding}" Padding="4,0,0,0"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </controls:TokenizingTextBox.SuggestedItemTemplate>
+                                <controls:TokenizingTextBox.TokenItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding}" Padding="4,0,0,0"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </controls:TokenizingTextBox.TokenItemTemplate>
+                            </controls:TokenizingTextBox>
+                        </StackPanel>
+
+                        <RelativePanel x:Name="RecipeTimePanel">
+                            <RelativePanel.Resources>
+                                <converters:TimeSpanToStringConverter x:Key="converters:TimeSpanToStringConverter"/>
+                            </RelativePanel.Resources>
+
+                            <TextBox x:Name="RecipePrepTime" Text="{Binding PrepTime, Mode=TwoWay, Converter={StaticResource converters:TimeSpanToStringConverter}}" Header="Prep Time" TabIndex="5" Margin="0,24,0,0" Width="85" HorizontalAlignment="Left" InputScope="NumberFullWidth" ui:TextBoxExtensions.CustomMask="5:[0-5]" ui:TextBoxExtensions.Mask="99:59" />
+                            <TextBox x:Name="RecipeCookTime" Text="{Binding CookTime, Mode=TwoWay, Converter={StaticResource converters:TimeSpanToStringConverter}}" Header="Cook Time" TabIndex="6" Margin="24,24,0,0" Width="85" HorizontalAlignment="Left" InputScope="NumberFullWidth" ui:TextBoxExtensions.CustomMask="5:[0-5]" ui:TextBoxExtensions.Mask="99:59" RelativePanel.RightOf="RecipePrepTime" />
+                        </RelativePanel>
+                        <RelativePanel x:Name="RecipeRatingPanel" Margin="0,24,0,0" >
+                            <TextBlock x:Name="RecipeRatingsLabel" Text="Rating" />
+                            <RatingControl x:Name="RecipeRating" Value="{Binding Rating, Mode=TwoWay}" TabIndex="9" RelativePanel.Below="RecipeRatingsLabel" />
+                        </RelativePanel>
                     </StackPanel>
-                </StackPanel>
-
-                <StackPanel x:Name="RecipeDetailsPanelRight" Margin="20" RelativePanel.RightOf="RecipeDetailsPanelLeft" >
-                    <TextBox x:Name="RecipeDescription" Text="{Binding Description, Mode=TwoWay}" Header="Description" TabIndex="1" Margin="0,24,0,0" Width="400" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" InputScope="Text" />
-
-                    <StackPanel x:Name="RecipeCuisinesPanel">
-                        <TextBlock x:Name="RecipeCuisinesTitle" Text="Cuisines" Margin="0,24,0,0" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
-                        <controls:TokenizingTextBox x:Name="RecipeCuisinesTokenizingTextBox" SuggestedItemsSource="{x:Bind local:MainPage.SuggestedCuisines}" ItemsSource="{Binding Cuisines, Mode=TwoWay}" PlaceholderText="Add Cuisines" TabIndex="3" Width="400" HorizontalAlignment="Stretch" TextMemberPath="Text" TokenDelimiter="," >
-                            <controls:TokenizingTextBox.SuggestedItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding}" Padding="4,0,0,0"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </controls:TokenizingTextBox.SuggestedItemTemplate>
-                            <controls:TokenizingTextBox.TokenItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding}" Padding="4,0,0,0"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </controls:TokenizingTextBox.TokenItemTemplate>
-                        </controls:TokenizingTextBox>
-                    </StackPanel>
-
-                    <RelativePanel x:Name="RecipeTimePanel">
-                        <RelativePanel.Resources>
-                            <converters:TimeSpanToStringConverter x:Key="converters:TimeSpanToStringConverter"/>
-                        </RelativePanel.Resources>
-
-                        <TextBox x:Name="RecipePrepTime" Text="{Binding PrepTime, Mode=TwoWay, Converter={StaticResource converters:TimeSpanToStringConverter}}" Header="Prep Time" TabIndex="5" Margin="0,24,0,0" Width="85" HorizontalAlignment="Left" InputScope="NumberFullWidth" ui:TextBoxExtensions.CustomMask="5:[0-5]" ui:TextBoxExtensions.Mask="99:59" />
-                        <TextBox x:Name="RecipeCookTime" Text="{Binding CookTime, Mode=TwoWay, Converter={StaticResource converters:TimeSpanToStringConverter}}" Header="Cook Time" TabIndex="6" Margin="24,24,0,0" Width="85" HorizontalAlignment="Left" InputScope="NumberFullWidth" ui:TextBoxExtensions.CustomMask="5:[0-5]" ui:TextBoxExtensions.Mask="99:59" RelativePanel.RightOf="RecipePrepTime" />
-                    </RelativePanel>
-                    <RelativePanel x:Name="RecipeRatingPanel" Margin="0,24,0,0" >
-                        <TextBlock x:Name="RecipeRatingsLabel" Text="Rating" />
-                        <RatingControl x:Name="RecipeRating" Value="{Binding Rating, Mode=TwoWay}" TabIndex="9" RelativePanel.Below="RecipeRatingsLabel" />
-                    </RelativePanel>
-                </StackPanel>
-            </RelativePanel>
-
-            <RelativePanel x:Name="RecipeIngredientsPanel" Margin="20" RelativePanel.Below="RecipeDetailsPanel">
-                <TextBlock x:Name="RecipeIngredientsTitleTextBlock" Text="Ingredients" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
-                <RelativePanel x:Name="RecipeIngredientPanel" RelativePanel.Below="RecipeIngredientsTitleTextBlock">
-                    <TextBox x:Name="AddRecipeIngredientQuantityTextBox" Header="Quantity" MaxLength="10" TabIndex="10" Width="65" HorizontalAlignment="Left" InputScope="NumberFullWidth" ui:TextBoxExtensions.Regex="^(?:[1-9]\d*(?:\.\d+)?|0\.0*[1-9]\d*)$" ui:TextBoxExtensions.ValidationMode="Forced" />
-                    <ComboBox x:Name="AddRecipeIngredientUnitOfMeasurementComboBox" Header="Unit of Measurement" TabIndex="11" Margin="10,0,0,0" Width="135" HorizontalAlignment="Left" RelativePanel.RightOf="AddRecipeIngredientQuantityTextBox" />
-                    <TextBox x:Name="AddRecipeIngredientNameTextBox" Header="Name" TabIndex="12" Margin="10,0,0,0" Width="180" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" InputScope="Text" RelativePanel.RightOf="AddRecipeIngredientUnitOfMeasurementComboBox" />
                 </RelativePanel>
 
-                <StackPanel x:Name="RecipeIngredientsButtonPanel" Orientation="Horizontal" RelativePanel.Below="RecipeIngredientPanel" RelativePanel.AlignRightWithPanel="True">
-                    <AppBarButton x:Name="RecipeIngredientAddButton" Style="{StaticResource AppBarButtonRevealStyle}" Icon="Add" Label="Add ingredient" Click="RecipeIngredientsAddButton_Click" />
-                    <AppBarButton x:Name="RecipeIngredientDeleteButton" Style="{StaticResource AppBarButtonRevealStyle}" IsEnabled="false" Icon="Delete" Label="Delete ingredient" Click="RecipeIngredientsDeleteButton_Click" />
-                </StackPanel>
+                <RelativePanel x:Name="RecipeIngredientsPanel" Margin="20" RelativePanel.Below="RecipeDetailsPanel">
+                    <TextBlock x:Name="RecipeIngredientsTitleTextBlock" Text="Ingredients" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
+                    <RelativePanel x:Name="RecipeIngredientPanel" RelativePanel.Below="RecipeIngredientsTitleTextBlock">
+                        <TextBox x:Name="AddRecipeIngredientQuantityTextBox" Header="Quantity" MaxLength="10" TabIndex="10" Width="65" HorizontalAlignment="Left" InputScope="NumberFullWidth" ui:TextBoxExtensions.Regex="^(?:[1-9]\d*(?:\.\d+)?|0\.0*[1-9]\d*)$" ui:TextBoxExtensions.ValidationMode="Forced" />
+                        <ComboBox x:Name="AddRecipeIngredientUnitOfMeasurementComboBox" Header="Unit of Measurement" TabIndex="11" Margin="10,0,0,0" Width="135" HorizontalAlignment="Left" RelativePanel.RightOf="AddRecipeIngredientQuantityTextBox" />
+                        <TextBox x:Name="AddRecipeIngredientNameTextBox" Header="Name" TabIndex="12" Margin="10,0,0,0" Width="180" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" InputScope="Text" RelativePanel.RightOf="AddRecipeIngredientUnitOfMeasurementComboBox" />
+                    </RelativePanel>
 
-                <ListView x:Name="RecipeIngredientsListView" ItemsSource="{Binding Ingredients}" SelectionMode="Single" RelativePanel.Below="RecipeIngredientsButtonPanel" SelectionChanged="RecipeIngredientsListView_SelectionChanged">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:Name="RecipeIngredientsSingleLineDataTemplate" x:DataType="recipeBox:Ingredient">
-                            <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Name}">
-                                <StackPanel.Resources>
-                                    <converters:IngredientToStringConverter x:Key="converters:IngredientToStringConverter"/>
-                                </StackPanel.Resources>
-                                
-                                <TextBlock x:Name="RecipeIngredientsListViewTextBlock" Text="{Binding Converter={StaticResource converters:IngredientToStringConverter}}" TextWrapping="Wrap" Width="400" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    <StackPanel x:Name="RecipeIngredientsButtonPanel" Orientation="Horizontal" RelativePanel.Below="RecipeIngredientPanel" RelativePanel.AlignRightWithPanel="True">
+                        <AppBarButton x:Name="RecipeIngredientAddButton" Style="{StaticResource AppBarButtonRevealStyle}" Icon="Add" Label="Add ingredient" Click="RecipeIngredientsAddButton_Click" />
+                        <AppBarButton x:Name="RecipeIngredientDeleteButton" Style="{StaticResource AppBarButtonRevealStyle}" IsEnabled="false" Icon="Delete" Label="Delete ingredient" Click="RecipeIngredientsDeleteButton_Click" />
+                    </StackPanel>
+
+                    <ListView x:Name="RecipeIngredientsListView" ItemsSource="{Binding Ingredients}" SelectionMode="Single" RelativePanel.Below="RecipeIngredientsButtonPanel" SelectionChanged="RecipeIngredientsListView_SelectionChanged">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:Name="RecipeIngredientsSingleLineDataTemplate" x:DataType="recipeBox:Ingredient">
+                                <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Name}">
+                                    <StackPanel.Resources>
+                                        <converters:IngredientToStringConverter x:Key="converters:IngredientToStringConverter"/>
+                                    </StackPanel.Resources>
+
+                                    <TextBlock x:Name="RecipeIngredientsListViewTextBlock" Text="{Binding Converter={StaticResource converters:IngredientToStringConverter}}" TextWrapping="Wrap" Width="400" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </RelativePanel>
+
+                <RelativePanel x:Name="RecipeInstructionsPanel" Margin="20" RelativePanel.RightOf="RecipeIngredientsPanel" RelativePanel.Below="RecipeDetailsPanel" >
+                    <TextBox x:Name="AddRecipeInstructionTextBox" Header="Instructions" PlaceholderText="Enter an instructions here" TabIndex="13" Margin="0,19,0,0" Width="400" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" InputScope="Text" />
+
+                    <StackPanel x:Name="RecipeInstructionsButtonPanel" Orientation="Horizontal" RelativePanel.Below="AddRecipeInstructionTextBox" RelativePanel.AlignRightWithPanel="True">
+                        <AppBarButton x:Name="RecipeInstructionAddButton" Style="{StaticResource AppBarButtonRevealStyle}" Icon="Add" Label="Add instruction" Click="RecipeInstructionsAddButton_Click" />
+                        <AppBarButton x:Name="RecipeInstructionDeleteButton" Style="{StaticResource AppBarButtonRevealStyle}" IsEnabled="false" Icon="Delete" Label="Delete instruction" Click="RecipeInstructionsDeleteButton_Click" />
+                    </StackPanel>
+
+                    <ListView x:Name="RecipeInstructionsListView" ItemsSource="{Binding Instructions}" SelectionMode="Single" RelativePanel.Below="RecipeInstructionsButtonPanel" SelectionChanged="RecipeInstructionsListView_SelectionChanged">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:Name="RecipeInstructionsSingleLineDataTemplate" x:DataType="recipeBox:RecipeInstruction">
+                                <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Instruction}">
+                                    <TextBlock x:Name="RecipeNotesListViewTextBlock" Text="{Binding}" TextWrapping="Wrap" Width="400" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </RelativePanel>
+
+                <RelativePanel x:Name="RecipeNotesPanel" Margin="20" RelativePanel.Below="RecipeIngredientsPanel">
+                    <TextBox x:Name="AddRecipeNoteTextBox" Header="Notes" PlaceholderText="Enter a note here" TabIndex="14" Width="400" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" InputScope="Text" />
+
+                    <StackPanel x:Name="RecipeNotesButtonPanel" Orientation="Horizontal" RelativePanel.Below="AddRecipeNoteTextBox" RelativePanel.AlignRightWithPanel="True">
+                        <AppBarButton x:Name="RecipeNoteAddButton" Style="{StaticResource AppBarButtonRevealStyle}" Icon="Add" Label="Add note" Click="RecipeNotesAddButton_Click" />
+                        <AppBarButton x:Name="RecipeNoteDeleteButton" Style="{StaticResource AppBarButtonRevealStyle}" IsEnabled="false" Icon="Delete" Label="Delete note" Click="RecipeNotesDeleteButton_Click" />
+                    </StackPanel>
+
+                    <ListView x:Name="RecipeNotesListView" ItemsSource="{Binding Notes}" SelectionMode="Single" RelativePanel.Below="RecipeNotesButtonPanel" SelectionChanged="RecipeNotesListView_SelectionChanged">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:Name="RecipeNotesSingleLineDataTemplate" x:DataType="recipeBox:RecipeNote">
+                                <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Note}">
+                                    <TextBlock x:Name="RecipeNotesListViewTextBlock" Text="{x:Bind x:String.Format('&#x2022; {0}', Note)}" TextWrapping="Wrap" Width="400" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </RelativePanel>
             </RelativePanel>
-
-            <RelativePanel x:Name="RecipeInstructionsPanel" Margin="20" RelativePanel.RightOf="RecipeIngredientsPanel" RelativePanel.Below="RecipeDetailsPanel" >
-                <TextBox x:Name="AddRecipeInstructionTextBox" Header="Instructions" PlaceholderText="Enter an instructions here" TabIndex="13" Margin="0,19,0,0" Width="400" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" InputScope="Text" />
-
-                <StackPanel x:Name="RecipeInstructionsButtonPanel" Orientation="Horizontal" RelativePanel.Below="AddRecipeInstructionTextBox" RelativePanel.AlignRightWithPanel="True">
-                    <AppBarButton x:Name="RecipeInstructionAddButton" Style="{StaticResource AppBarButtonRevealStyle}" Icon="Add" Label="Add instruction" Click="RecipeInstructionsAddButton_Click" />
-                    <AppBarButton x:Name="RecipeInstructionDeleteButton" Style="{StaticResource AppBarButtonRevealStyle}" IsEnabled="false" Icon="Delete" Label="Delete instruction" Click="RecipeInstructionsDeleteButton_Click" />
-                </StackPanel>
-
-                <ListView x:Name="RecipeInstructionsListView" ItemsSource="{Binding Instructions}" SelectionMode="Single" RelativePanel.Below="RecipeInstructionsButtonPanel" SelectionChanged="RecipeInstructionsListView_SelectionChanged">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:Name="RecipeInstructionsSingleLineDataTemplate" x:DataType="recipeBox:RecipeInstruction">
-                            <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Instruction}">
-                                <TextBlock x:Name="RecipeNotesListViewTextBlock" Text="{Binding}" TextWrapping="Wrap" Width="400" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </RelativePanel>
-
-            <RelativePanel x:Name="RecipeNotesPanel" Margin="20" RelativePanel.Below="RecipeIngredientsPanel">
-                <TextBox x:Name="AddRecipeNoteTextBox" Header="Notes" PlaceholderText="Enter a note here" TabIndex="14" Width="400" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" InputScope="Text" />
-
-                <StackPanel x:Name="RecipeNotesButtonPanel" Orientation="Horizontal" RelativePanel.Below="AddRecipeNoteTextBox" RelativePanel.AlignRightWithPanel="True">
-                    <AppBarButton x:Name="RecipeNoteAddButton" Style="{StaticResource AppBarButtonRevealStyle}" Icon="Add" Label="Add note" Click="RecipeNotesAddButton_Click" />
-                    <AppBarButton x:Name="RecipeNoteDeleteButton" Style="{StaticResource AppBarButtonRevealStyle}" IsEnabled="false" Icon="Delete" Label="Delete note" Click="RecipeNotesDeleteButton_Click" />
-                </StackPanel>
-                
-                <ListView x:Name="RecipeNotesListView" ItemsSource="{Binding Notes}" SelectionMode="Single" RelativePanel.Below="RecipeNotesButtonPanel" SelectionChanged="RecipeNotesListView_SelectionChanged">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:Name="RecipeNotesSingleLineDataTemplate" x:DataType="recipeBox:RecipeNote">
-                            <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Note}">
-                                <TextBlock x:Name="RecipeNotesListViewTextBlock" Text="{x:Bind x:String.Format('&#x2022; {0}', Note)}" TextWrapping="Wrap" Width="400" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </RelativePanel>
-        </RelativePanel>
+        </ScrollViewer>
     </Grid>
 </Page>
