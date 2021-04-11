@@ -33,13 +33,15 @@ namespace RecipeBox.Converters
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             string strValue = value as string;
-            if (strValue.Equals("__:__"))
-                return new TimeSpan();
-
             TimeSpan resultSpan;
+
             if (TimeSpan.TryParse(strValue, out resultSpan))
             {
                 return resultSpan;
+            }
+            else if (strValue == "__:__")
+            {
+                return strValue;
             }
 
             return new TimeSpan();
