@@ -122,7 +122,7 @@ namespace RecipeBox.Pages
                 {
                     // Only files on the local computer are supported. 
                     // Files on OneDrive or a network location are excluded.
-                    if (file.Provider.Id == "computer")
+                    if (file.Provider.Id == "computer" || file.Provider.Id == "OneDrive")
                     {
                         Recipes.Add(await LoadRecipe(file));
 
@@ -130,6 +130,7 @@ namespace RecipeBox.Pages
                         {
                             LoadSuggestedCategories(recipe);
                             LoadSuggestedCuisines(recipe);
+                            recipe.NeedsSaved = false;
                         }
                     }
                     else
@@ -302,6 +303,39 @@ namespace RecipeBox.Pages
             var filtered = Recipes.Where(recipe => Filter(recipe));
             Remove_NonMatching(filtered);
             AddBack_Recipe(filtered);
+        }
+
+        private void EditRecipeMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
+            MenuFlyoutItem menuFlyoutItem = sender as MenuFlyoutItem;
+            Recipe recipe = menuFlyoutItem.DataContext as Recipe;
+            Frame.Navigate(typeof(NewRecipePage), recipe);
+        }
+
+        private async void DeleteRecipeMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
+            MenuFlyoutItem menuFlyoutItem = sender as MenuFlyoutItem;
+            Recipe recipe = menuFlyoutItem.DataContext as Recipe;
+
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            StorageFolder recipesFolder = await StorageFolder.GetFolderFromPathAsync(localSettings.Values["RecipeSaveLocation"].ToString());
+            StorageFolder recipeFolder = await recipesFolder.CreateFolderAsync(recipe.Id, CreationCollisionOption.OpenIfExists);
+
+            ContentDialog saveDialog = new ContentDialog()
+            {
+                Title = "Delete Recipe",
+                Content = "Are you sure you want to delete this recipe?",
+                PrimaryButtonText = "Ok",
+                SecondaryButtonText = "Cancel"
+            };
+
+            ContentDialogResult result = await saveDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                await recipeFolder.DeleteAsync();
+                await GetItemsAsync();
+            }
+            
         }
         #endregion
     }
