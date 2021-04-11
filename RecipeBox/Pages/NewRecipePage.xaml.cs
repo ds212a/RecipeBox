@@ -279,11 +279,29 @@ namespace RecipeBox.Pages
 
         private void getRecipeFromUrlButton_Click(object sender, RoutedEventArgs e)
         {
+            string recipeName = string.Empty;
+            string recipeDescription = string.Empty;
+
             var url = "https://dailycookingquest.com/cards/sate-babi-indonesian-pork-satay.html";
             var web = new HtmlWeb();
             var doc = web.Load(url);
-            var blah = doc.DocumentNode.SelectNodes("//head/meta").Where(node => node.Attributes["name"].Equals("description"));
-            var innerText = doc.DocumentNode.InnerText;
+            var metaNodes = doc.DocumentNode.SelectNodes("//head/meta");
+
+            foreach(var metaNode in metaNodes)
+            {
+                foreach(var attribute in metaNode.Attributes.AttributesWithName("name"))
+                {
+                    if (attribute.Value.ToLower().Equals("description"))
+                    {
+                        foreach(var att in metaNode.Attributes.AttributesWithName("content"))
+                        {
+                            recipeDescription = att.Value;
+                        }    
+                    }
+                }
+            }
+
+            var bodyNodes = doc.DocumentNode.SelectNodes("//body");
         }
         #endregion
     }
