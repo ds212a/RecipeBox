@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -214,7 +215,11 @@ namespace RecipeBox.Pages
         {
             uint index = Convert.ToUInt16(RecipeIngredientsListView.Items.Count + 1);
             Ingredient.UnitOfMeasurements unitOfMeasurement = (Ingredient.UnitOfMeasurements)Enum.Parse(typeof(Ingredient.UnitOfMeasurements), AddRecipeIngredientUnitOfMeasurementComboBox.SelectedItem.ToString());
-            recipe.Ingredients.Add(new Ingredient(Guid.NewGuid().ToString(), index, AddRecipeIngredientNameTextBox.Text, Convert.ToDouble(AddRecipeIngredientQuantityTextBox.Text), unitOfMeasurement));
+            double quantity = Convert.ToDouble(AddRecipeIngredientQuantityTextBox.Text);
+            if (unitOfMeasurement == Ingredient.UnitOfMeasurements.Header)
+                quantity = 0;
+
+            recipe.Ingredients.Add(new Ingredient(Guid.NewGuid().ToString(), index, AddRecipeIngredientNameTextBox.Text, quantity, unitOfMeasurement));
         }
 
         private void RecipeIngredientsDeleteButton_Click(object sender, RoutedEventArgs e)
@@ -279,8 +284,13 @@ namespace RecipeBox.Pages
 
         private void getRecipeFromUrlButton_Click(object sender, RoutedEventArgs e)
         {
-            string recipeName = string.Empty;
-            string recipeDescription = string.Empty;
+            Regex timeRegEx = new Regex(@"(?<prefix>(Prep|Cook)\sTime:)\s+(?<hours>\d+\s(hours|hour))\s+(?<minutes>\d+\s(mins|min))", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+            if (string.IsNullOrEmpty(recipe.Id))
+            {
+                string guid = Guid.NewGuid().ToString();
+                recipe.Id = guid;
+            }
 
             var url = "https://dailycookingquest.com/cards/sate-babi-indonesian-pork-satay.html";
             var web = new HtmlWeb();
@@ -295,13 +305,68 @@ namespace RecipeBox.Pages
                     {
                         foreach(var att in metaNode.Attributes.AttributesWithName("content"))
                         {
-                            recipeDescription = att.Value;
+                            recipe.Description = att.Value;
                         }    
                     }
                 }
             }
 
-            var bodyNodes = doc.DocumentNode.SelectNodes("//body");
+            var bodyNodes = doc.DocumentNode.SelectNodes("//body/div/div/div/article/section");
+            foreach(var childNode in bodyNodes[0].ChildNodes)
+            {
+                if (childNode.Name == "h2")
+                    recipe.Name = childNode.InnerText;
+                
+                if(childNode.Name == "p")
+                {
+                    int j = 0;
+                    if (childNode.InnerText.StartsWith("Categories:"))
+                    {
+                        foreach (string category in childNode.InnerText.Split())
+                        {
+                            if (category.StartsWith("Categories:"))
+                                continue;
+
+                            recipe.Categories.Add(category);
+                        }
+                    }
+                    else if (childNode.InnerText.StartsWith("Cuisine:"))
+                    {
+                        foreach(string cuisine in childNode.InnerText.Split())
+                        {
+                            if (cuisine.StartsWith("Cuisine:"))
+                                continue;
+
+                            recipe.Cuisines.Add(cuisine);
+                        }
+                    }
+                    else if (childNode.InnerText.StartsWith("Prep Time:"))
+                    {
+                        MatchCollection matches = timeRegEx.Matches(childNode.InnerText);
+
+                    }
+                    else if (childNode.InnerText.StartsWith("Cook Time:"))
+                    {
+                        j++;
+                    }
+                    else if (childNode.InnerText.StartsWith("Serves:"))
+                    {
+                        recipe.Servings = Convert.ToUInt32(childNode.InnerText.Split()[1]);
+                    }
+                }
+
+                if(childNode.Name == "h3")
+                {
+                    if(childNode.InnerText == "Ingredients")
+                    {
+
+                    }
+                    else if(childNode.InnerText == "Instructions")
+                    {
+
+                    }
+                }
+            }
         }
         #endregion
     }
