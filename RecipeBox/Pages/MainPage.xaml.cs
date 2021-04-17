@@ -179,7 +179,8 @@ namespace RecipeBox.Pages
         {
             foreach (string category in recipe.Categories)
             {
-                SuggestedCategories.Add(category);
+                if(SuggestedCategories.Contains(category) == false)
+                    SuggestedCategories.Add(category);
             }
         }
 
@@ -187,7 +188,8 @@ namespace RecipeBox.Pages
         {
             foreach (string cuisine in recipe.Cuisines)
             {
-                SuggestedCuisines.Add(cuisine);
+                if(SuggestedCuisines.Contains(cuisine) == false)
+                    SuggestedCuisines.Add(cuisine);
             }
         }
 
