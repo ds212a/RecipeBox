@@ -180,7 +180,7 @@ namespace RecipeBox.Pages
             else
             {
                 recipe.Cuisines.Clear();
-                recipe.Cuisines = new ObservableCollection<string>(categoriesTokenText.Split(',').Where(s => string.IsNullOrEmpty(s) == false));
+                recipe.Cuisines = new ObservableCollection<string>(cuisinesTokenText.Split(',').Where(s => string.IsNullOrEmpty(s) == false));
             }
 
             string[] prepTimeSplit = RecipePrepTime.Text.Split(':');
