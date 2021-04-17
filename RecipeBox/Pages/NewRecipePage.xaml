@@ -95,7 +95,13 @@
                 <RelativePanel x:Name="RecipeIngredientsPanel" Margin="20" RelativePanel.Below="RecipeDetailsPanel">
                     <TextBlock x:Name="RecipeIngredientsTitleTextBlock" Text="Ingredients" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
                     <RelativePanel x:Name="RecipeIngredientPanel" RelativePanel.Below="RecipeIngredientsTitleTextBlock">
-                        <muxc:NumberBox x:Name="AddRecipeIngredientQuantityNumberBox" Header="Quantity" PlaceholderText="0.00" TabIndex="10" Padding="0,0,0,16" Width="65" HorizontalAlignment="Left" AcceptsExpression="False" />
+                        <muxc:NumberBox x:Name="AddRecipeIngredientQuantityNumberBox" Header="Quantity" PlaceholderText="0.00" TabIndex="10" Padding="0,0,0,16" Width="65" HorizontalAlignment="Left" AcceptsExpression="False" >
+                            <FlyoutBase.AttachedFlyout>
+                                <Flyout>
+                                    <TextBlock Text="Please enter a quantity." />
+                                </Flyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </muxc:NumberBox>
                         <ComboBox x:Name="AddRecipeIngredientUnitOfMeasurementComboBox" Header="Unit of Measurement" TabIndex="11" Padding="0,0,0,20" Margin="10,0,0,0" Width="135" HorizontalAlignment="Left" RelativePanel.RightOf="AddRecipeIngredientQuantityNumberBox" />
                         <TextBox x:Name="AddRecipeIngredientNameTextBox" Header="Name" TabIndex="12" Padding="0,0,0,16" Margin="10,0,0,0" Width="180" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" InputScope="Text" RelativePanel.RightOf="AddRecipeIngredientUnitOfMeasurementComboBox" />
                     </RelativePanel>

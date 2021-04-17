@@ -215,7 +215,18 @@ namespace RecipeBox.Pages
         {
             uint index = Convert.ToUInt16(RecipeIngredientsListView.Items.Count + 1);
             Ingredient.UnitOfMeasurements unitOfMeasurement = (Ingredient.UnitOfMeasurements)Enum.Parse(typeof(Ingredient.UnitOfMeasurements), AddRecipeIngredientUnitOfMeasurementComboBox.SelectedItem.ToString());
-            double quantity = AddRecipeIngredientQuantityNumberBox.Value;
+
+            double quantity = 0;
+            if (double.IsNaN(AddRecipeIngredientQuantityNumberBox.Value))
+            {
+                FlyoutBase.ShowAttachedFlyout(AddRecipeIngredientQuantityNumberBox);
+                return;
+            }
+            else
+            {
+                quantity = AddRecipeIngredientQuantityNumberBox.Value;
+            }
+
             if (unitOfMeasurement == Ingredient.UnitOfMeasurements.Header)
                 quantity = 0;
 
