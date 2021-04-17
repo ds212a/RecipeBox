@@ -215,7 +215,7 @@ namespace RecipeBox.Pages
         {
             uint index = Convert.ToUInt16(RecipeIngredientsListView.Items.Count + 1);
             Ingredient.UnitOfMeasurements unitOfMeasurement = (Ingredient.UnitOfMeasurements)Enum.Parse(typeof(Ingredient.UnitOfMeasurements), AddRecipeIngredientUnitOfMeasurementComboBox.SelectedItem.ToString());
-            double quantity = Convert.ToDouble(AddRecipeIngredientQuantityTextBox.Text);
+            double quantity = AddRecipeIngredientQuantityNumberBox.Value;
             if (unitOfMeasurement == Ingredient.UnitOfMeasurements.Header)
                 quantity = 0;
 
