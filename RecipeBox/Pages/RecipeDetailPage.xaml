@@ -19,129 +19,131 @@
         <!-- Required for the print service provider -->
         <Canvas x:Name="printingRoot" Opacity="0" Margin="-2000 0 0 0" />
 
-        <RelativePanel>
-            <TextBlock x:Name="TitleTextBlock" Text="{Binding Name}" Style="{StaticResource TitleTextBlockStyle}" Margin="24,0,0,24" />
-            <RatingControl x:Name="RecipeDetailRating" Value="{Binding Rating}" IsReadOnly="True" Margin="24,0,0,0" HorizontalAlignment="Left" RelativePanel.Below="TitleTextBlock" />
-            <CommandBar x:Name="RecipeDetailCommandBar" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" RelativePanel.AlignRightWithPanel="True" OverflowButtonVisibility="Collapsed" DefaultLabelPosition="Right">
-                <AppBarButton x:Name="editRecipeButton" Tag="editRecipeButton" Icon="Edit" Label="Edit" Click="editRecipeButton_Click" />
-                <AppBarButton x:Name="printRecipeButton" Tag="printRecipeButton" Icon="Print" Label="Print" Click="printRecipeButton_Click" />
-            </CommandBar>
+        <ScrollViewer x:Name="RecipeDetailScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" VerticalScrollMode="Auto" HorizontalScrollMode="Auto" >
+            <RelativePanel>
+                <TextBlock x:Name="TitleTextBlock" Text="{Binding Name}" Style="{StaticResource TitleTextBlockStyle}" Margin="24,0,0,24" />
+                <RatingControl x:Name="RecipeDetailRating" Value="{Binding Rating}" IsReadOnly="True" Margin="24,0,0,0" HorizontalAlignment="Left" RelativePanel.Below="TitleTextBlock" />
+                <CommandBar x:Name="RecipeDetailCommandBar" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" RelativePanel.AlignRightWithPanel="True" OverflowButtonVisibility="Collapsed" DefaultLabelPosition="Right">
+                    <AppBarButton x:Name="editRecipeButton" Tag="editRecipeButton" Icon="Edit" Label="Edit" Click="editRecipeButton_Click" />
+                    <AppBarButton x:Name="printRecipeButton" Tag="printRecipeButton" Icon="Print" Label="Print" Click="printRecipeButton_Click" />
+                </CommandBar>
 
-            <RelativePanel x:Name="RecipeDetailsPanel" RelativePanel.Below="RecipeDetailRating">
-                <StackPanel x:Name="RecipeDetailsPanelLeft" Margin="20" >
-                    <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="Description: " />
-                        <TextBlock x:Name="RecipeDetailDescription" Text="{Binding Description}" TextWrapping="Wrap" Width="400" Margin="5,0,0,0" />
+                <RelativePanel x:Name="RecipeDetailsPanel" RelativePanel.Below="RecipeDetailRating">
+                    <StackPanel x:Name="RecipeDetailsPanelLeft" Margin="20" >
+                        <StackPanel Orientation="Horizontal" >
+                            <TextBlock Text="Description: " />
+                            <TextBlock x:Name="RecipeDetailDescription" Text="{Binding Description}" TextWrapping="Wrap" Width="400" Margin="5,0,0,0" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,24,0,0" >
+                            <TextBlock Text="Categories:" />
+                            <ItemsControl ItemsSource="{Binding Categories}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" VerticalAlignment="Center" Margin="5,0,0,0" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,24,0,0" >
+                            <TextBlock Text="Cuisine:" />
+                            <ItemsControl ItemsSource="{Binding Cuisines}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" VerticalAlignment="Center" Margin="5,0,0,0" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,24,0,0">
+                            <TextBlock Text="Servings:" />
+                            <TextBlock x:Name="RecipeDetailServings" Text="{Binding Servings}" Margin="5,0,0,0"/>
+                        </StackPanel>
                     </StackPanel>
 
-                    <StackPanel Orientation="Horizontal" Margin="0,24,0,0" >
-                        <TextBlock Text="Categories:" />
-                        <ItemsControl ItemsSource="{Binding Categories}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
+                    <StackPanel x:Name="RecipeDetailsPanelRight" Margin="20" RelativePanel.RightOf="RecipeDetailsPanelLeft" >
+                        <StackPanel.Resources>
+                            <converters:TimeSpanToStringConverter x:Key="converters:TimeSpanToStringConverter"/>
+                        </StackPanel.Resources>
 
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding}" VerticalAlignment="Center" Margin="5,0,0,0" />
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                        <StackPanel Orientation="Horizontal" >
+                            <TextBlock Text="Prep Time:" />
+                            <TextBlock x:Name="RecipeDetailPrepTime" Text="{Binding PrepTime, Converter={StaticResource converters:TimeSpanToStringConverter}}" Margin="5,0,0,0" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,24,0,0" >
+                            <TextBlock Text="Cook Time:" />
+                            <TextBlock x:Name="RecipeDetailCookTime" Text="{Binding CookTime, Converter={StaticResource converters:TimeSpanToStringConverter}}" Margin="5,0,0,0" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,24,0,0">
+                            <TextBlock Text="Total Time:" />
+                            <TextBlock x:Name="RecipeDetailTotalTime" Text="{Binding TotalTime, Converter={StaticResource converters:TimeSpanToStringConverter}}" Margin="5,0,0,0"/>
+                        </StackPanel>
                     </StackPanel>
+                </RelativePanel>
 
-                    <StackPanel Orientation="Horizontal" Margin="0,24,0,0" >
-                        <TextBlock Text="Cuisine:" />
-                        <ItemsControl ItemsSource="{Binding Cuisines}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
+                <RelativePanel x:Name="RecipeIngredientsPanel" Margin="20" RelativePanel.Below="RecipeDetailsPanel">
+                    <TextBlock x:Name="RecipeIngredientsTitleTextBlock" Text="Ingredients" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
 
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding}" VerticalAlignment="Center" Margin="5,0,0,0" />
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
+                    <ListView x:Name="RecipeIngredientsListView" ItemsSource="{Binding Ingredients}" SelectionMode="None" RelativePanel.Below="RecipeIngredientsTitleTextBlock">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:Name="RecipeIngredientsSingleLineDataTemplate" x:DataType="recipeBox:Ingredient">
+                                <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Name}">
+                                    <StackPanel.Resources>
+                                        <converters:IngredientToStringConverter x:Key="converters:IngredientToStringConverter"/>
+                                    </StackPanel.Resources>
 
-                    <StackPanel Orientation="Horizontal" Margin="0,24,0,0">
-                        <TextBlock Text="Servings:" />
-                        <TextBlock x:Name="RecipeDetailServings" Text="{Binding Servings}" Margin="5,0,0,0"/>
-                    </StackPanel>
-                </StackPanel>
+                                    <TextBlock x:Name="RecipeIngredientsListViewTextBlock" Text="{Binding Converter={StaticResource converters:IngredientToStringConverter}}" TextWrapping="Wrap" Width="400" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </RelativePanel>
 
-                <StackPanel x:Name="RecipeDetailsPanelRight" Margin="20" RelativePanel.RightOf="RecipeDetailsPanelLeft" >
-                    <StackPanel.Resources>
-                        <converters:TimeSpanToStringConverter x:Key="converters:TimeSpanToStringConverter"/>
-                    </StackPanel.Resources>
-                    
-                    <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="Prep Time:" />
-                        <TextBlock x:Name="RecipeDetailPrepTime" Text="{Binding PrepTime, Converter={StaticResource converters:TimeSpanToStringConverter}}" Margin="5,0,0,0" />
-                    </StackPanel>
+                <RelativePanel x:Name="RecipeInstructionsPanel" Margin="20" RelativePanel.RightOf="RecipeIngredientsPanel" RelativePanel.Below="RecipeDetailsPanel" >
+                    <TextBlock x:Name="RecipeInstructionsTitleTextBlock" Text="Instructions" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
 
-                    <StackPanel Orientation="Horizontal" Margin="0,24,0,0" >
-                        <TextBlock Text="Cook Time:" />
-                        <TextBlock x:Name="RecipeDetailCookTime" Text="{Binding CookTime, Converter={StaticResource converters:TimeSpanToStringConverter}}" Margin="5,0,0,0" />
-                    </StackPanel>
+                    <ListView x:Name="RecipeInstructionsListView" ItemsSource="{Binding Instructions}" SelectionMode="None" RelativePanel.Below="RecipeInstructionsTitleTextBlock">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:Name="RecipeInstructionsSingleLineDataTemplate" x:DataType="recipeBox:RecipeInstruction">
+                                <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Instruction}">
+                                    <TextBlock x:Name="RecipeNotesListViewTextBlock" Text="{Binding}" TextWrapping="Wrap" Width="400" VerticalAlignment="Center" Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </RelativePanel>
 
-                    <StackPanel Orientation="Horizontal" Margin="0,24,0,0">
-                        <TextBlock Text="Total Time:" />
-                        <TextBlock x:Name="RecipeDetailTotalTime" Text="{Binding TotalTime, Converter={StaticResource converters:TimeSpanToStringConverter}}" Margin="5,0,0,0"/>
-                    </StackPanel>
-                </StackPanel>
+                <RelativePanel x:Name="RecipeNotesPanel" Margin="20" RelativePanel.Below="RecipeIngredientsPanel">
+                    <TextBlock x:Name="RecipeNotessTitleTextBlock" Text="Notes" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
+
+                    <ListView x:Name="RecipeNotesListView" ItemsSource="{Binding Notes}" SelectionMode="None" RelativePanel.Below="RecipeNotessTitleTextBlock">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:Name="RecipeNotesSingleLineDataTemplate" x:DataType="recipeBox:RecipeNote">
+                                <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Note}">
+                                    <TextBlock x:Name="RecipeNotesListViewTextBlock" Text="{x:Bind x:String.Format('&#x2022; {0}', Note)}" TextWrapping="Wrap" Width="400" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </RelativePanel>
+
             </RelativePanel>
-
-            <RelativePanel x:Name="RecipeIngredientsPanel" Margin="20" RelativePanel.Below="RecipeDetailsPanel">
-                <TextBlock x:Name="RecipeIngredientsTitleTextBlock" Text="Ingredients" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
-
-                <ListView x:Name="RecipeIngredientsListView" ItemsSource="{Binding Ingredients}" SelectionMode="None" RelativePanel.Below="RecipeIngredientsTitleTextBlock">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:Name="RecipeIngredientsSingleLineDataTemplate" x:DataType="recipeBox:Ingredient">
-                            <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Name}">
-                                <StackPanel.Resources>
-                                    <converters:IngredientToStringConverter x:Key="converters:IngredientToStringConverter"/>
-                                </StackPanel.Resources>
-                                
-                                <TextBlock x:Name="RecipeIngredientsListViewTextBlock" Text="{Binding Converter={StaticResource converters:IngredientToStringConverter}}" TextWrapping="Wrap" Width="400" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </RelativePanel>
-
-            <RelativePanel x:Name="RecipeInstructionsPanel" Margin="20" RelativePanel.RightOf="RecipeIngredientsPanel" RelativePanel.Below="RecipeDetailsPanel" >
-                <TextBlock x:Name="RecipeInstructionsTitleTextBlock" Text="Instructions" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
-
-                <ListView x:Name="RecipeInstructionsListView" ItemsSource="{Binding Instructions}" SelectionMode="None" RelativePanel.Below="RecipeInstructionsTitleTextBlock">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:Name="RecipeInstructionsSingleLineDataTemplate" x:DataType="recipeBox:RecipeInstruction">
-                            <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Instruction}">
-                                <TextBlock x:Name="RecipeNotesListViewTextBlock" Text="{Binding}" TextWrapping="Wrap" Width="400" VerticalAlignment="Center" Margin="12,0,0,0"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </RelativePanel>
-
-            <RelativePanel x:Name="RecipeNotesPanel" Margin="20" RelativePanel.Below="RecipeIngredientsPanel">
-                <TextBlock x:Name="RecipeNotessTitleTextBlock" Text="Notes" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"/>
-
-                <ListView x:Name="RecipeNotesListView" ItemsSource="{Binding Notes}" SelectionMode="None" RelativePanel.Below="RecipeNotessTitleTextBlock">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:Name="RecipeNotesSingleLineDataTemplate" x:DataType="recipeBox:RecipeNote">
-                            <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Note}">
-                                <TextBlock x:Name="RecipeNotesListViewTextBlock" Text="{x:Bind x:String.Format('&#x2022; {0}', Note)}" TextWrapping="Wrap" Width="400" VerticalAlignment="Center" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="12,0,0,0"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </RelativePanel>
-
-        </RelativePanel>
+        </ScrollViewer>
     </Grid>
 </Page>
