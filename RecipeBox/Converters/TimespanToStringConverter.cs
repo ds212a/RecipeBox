@@ -18,8 +18,8 @@ namespace RecipeBox.Converters
             }
 
             string formatted = string.Format("{0}:{1}",
-                span.Duration().Hours > 0 ? string.Format("{0:0}", span.Hours) : "00",
-                span.Duration().Minutes > 0 ? string.Format("{0:0}", span.Minutes) : "00");
+                span.Duration().Hours > 0 ? string.Format("{0,2:D2}", span.Hours) : "00",
+                span.Duration().Minutes > 0 ? string.Format("{0,2:D2}", span.Minutes) : "00");
 
             if (formatted.EndsWith(", ")) 
                 formatted = formatted.Substring(0, formatted.Length - 2);
