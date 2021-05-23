@@ -147,6 +147,40 @@ namespace RecipeBox.Pages
             saveDialog.IsEnabled = false;
         }
 
+        double FractionToDouble(string fraction)
+        {
+            double result = 0.0;
+
+            if (double.TryParse(fraction, out result))
+            {
+                return result;
+            }
+
+            string[] split = fraction.Split(new char[] { ' ', '/' });
+
+            if (split.Length == 2 || split.Length == 3)
+            {
+                int a, b;
+
+                if (int.TryParse(split[0], out a) && int.TryParse(split[1], out b))
+                {
+                    if (split.Length == 2)
+                    {
+                        return (double)a / b;
+                    }
+
+                    int c;
+
+                    if (int.TryParse(split[2], out c))
+                    {
+                        return a + (double)b / c;
+                    }
+                }
+            }
+
+            throw new FormatException("Not a valid fraction.");
+        }
+
         #region Event Handlers
         private async void saveRecipeButton_Click(object sender, RoutedEventArgs e)
         {
@@ -293,9 +327,11 @@ namespace RecipeBox.Pages
             }
         }
 
-        private void getRecipeFromUrlButton_Click(object sender, RoutedEventArgs e)
+        private async void getRecipeFromUrlButton_Click(object sender, RoutedEventArgs e)
         {
-            Regex timeRegEx = new Regex(@"(?<prefix>(Prep|Cook)\sTime:)\s+(?<hours>\d+\s(hours|hour))\s+(?<minutes>\d+\s(mins|min))", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            Regex timeRegEx = new Regex(@"(?<prefix>(Prep|Cook)\sTime:)\s+(?<hours>\d+\s(hours|hour))?(\s+)?(?<minutes>\d+\s(mins|min))?", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            string unitsOfMeaturementsRegExString = string.Join("|", Enum.GetNames(typeof(Ingredient.UnitOfMeasurements)));
+            Regex ingredientRegEx = new Regex($@"(?<prefix>(\D+\s\D+\s|\D+))?(?<quantity>(\d+|\d+\/\d+))?(?<unitOfMeasurement>\D+({unitsOfMeaturementsRegExString}))?\s(?<name>.+)?", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
             if (string.IsNullOrEmpty(recipe.Id))
             {
@@ -303,7 +339,42 @@ namespace RecipeBox.Pages
                 recipe.Id = guid;
             }
 
-            var url = "https://dailycookingquest.com/cards/sate-babi-indonesian-pork-satay.html";
+            //var url = "https://dailycookingquest.com/cards/sate-babi-indonesian-pork-satay.html";
+            var url = RecipeUrl.Text;
+            if (string.IsNullOrEmpty(url))
+            {
+                ContentDialog unsupportedUrlDialog = new ContentDialog()
+                {
+                    Title = "No website entered",
+                    Content = "You haven't entered a website, please enter a website.  Currently only dailycookingquest.com is supported.",
+                    PrimaryButtonText = "Ok"
+                };
+
+                ContentDialogResult result = await unsupportedUrlDialog.ShowAsync();
+                if (result == ContentDialogResult.Primary)
+                {
+                    return;
+                }
+            }
+            else if (!url.Contains("dailycookingquest"))
+            {
+                ContentDialog unsupportedUrlDialog = new ContentDialog()
+                {
+                    Title = "Unsupported Website",
+                    Content = "You have entered an unsupported website, currently only dailycookingquest.com is supported.",
+                    PrimaryButtonText = "Ok"
+                };
+
+                ContentDialogResult result = await unsupportedUrlDialog.ShowAsync();
+                if (result == ContentDialogResult.Primary)
+                {
+                    return;
+                }
+            }
+
+            recipe.Url = url;
+
+            // https://html-agility-pack.net/documentation
             var web = new HtmlWeb();
             var doc = web.Load(url);
             var metaNodes = doc.DocumentNode.SelectNodes("//head/meta");
@@ -330,15 +401,20 @@ namespace RecipeBox.Pages
                 
                 if(childNode.Name == "p")
                 {
-                    int j = 0;
                     if (childNode.InnerText.StartsWith("Categories:"))
                     {
-                        foreach (string category in childNode.InnerText.Split())
-                        {
-                            if (category.StartsWith("Categories:"))
-                                continue;
+                        string categories = childNode.InnerText.Replace("Categories: ", "");
 
-                            recipe.Categories.Add(category);
+                        if(categories.Contains("Main Dish"))
+                        {
+                            recipe.Categories.Add("Main Dish");
+                            categories = categories.Replace("Main Dish", "");
+                        }
+
+                        foreach (string category in categories.Split())
+                        {
+                            if(!string.IsNullOrEmpty(category))
+                                recipe.Categories.Add(category);
                         }
                     }
                     else if (childNode.InnerText.StartsWith("Cuisine:"))
@@ -353,12 +429,43 @@ namespace RecipeBox.Pages
                     }
                     else if (childNode.InnerText.StartsWith("Prep Time:"))
                     {
+                        int hours = 0;
+                        int minutes = 0;
+                        int seconds = 0;
+                        
                         MatchCollection matches = timeRegEx.Matches(childNode.InnerText);
+                        if(matches.Count > 0)
+                        {
+                            Group group = matches[0].Groups["hours"];
+                            if (group.Success)
+                                hours = Convert.ToInt32(matches[0].Groups["hours"].Value.Split()[0]);
 
+                            group = matches[0].Groups["minutes"];
+                            if (group.Success)
+                                minutes = Convert.ToInt32(matches[0].Groups["minutes"].Value.Split()[0]);
+                        }
+                        
+                        recipe.PrepTime = new TimeSpan(hours, minutes, seconds);
                     }
                     else if (childNode.InnerText.StartsWith("Cook Time:"))
                     {
-                        j++;
+                        int hours = 0;
+                        int minutes = 0;
+                        int seconds = 0;
+                        
+                        MatchCollection matches = timeRegEx.Matches(childNode.InnerText);
+                        if (matches.Count > 0)
+                        {
+                            Group group = matches[0].Groups["hours"];
+                            if (group.Success)
+                                hours = Convert.ToInt32(matches[0].Groups["hours"].Value.Split()[0]);
+
+                            group = matches[0].Groups["minutes"];
+                            if (group.Success)
+                                minutes = Convert.ToInt32(matches[0].Groups["minutes"].Value.Split()[0]);
+                        }
+
+                        recipe.CookTime = new TimeSpan(hours, minutes, seconds);
                     }
                     else if (childNode.InnerText.StartsWith("Serves:"))
                     {
@@ -368,13 +475,103 @@ namespace RecipeBox.Pages
 
                 if(childNode.Name == "h3")
                 {
-                    if(childNode.InnerText == "Ingredients")
+                    if (childNode.InnerText == "Ingredients")
                     {
+                        if (childNode.NextSibling.Name == "ul")
+                        {
+                            foreach (var listNode in childNode.NextSibling.ChildNodes)
+                            {
+                                foreach (var attribute in listNode.Attributes)
+                                {
+                                    if (attribute.Name.ToLower() == "class" && attribute.Value.ToLower() == "ingredient")
+                                    {
+                                        string prefix = string.Empty;
+                                        double quantity = 0;
+                                        Ingredient.UnitOfMeasurements unitOfMeasurement = Ingredient.UnitOfMeasurements.Item;
+                                        string name = string.Empty;
 
+                                        MatchCollection matches = ingredientRegEx.Matches(listNode.InnerText);
+                                        if (matches.Count > 0)
+                                        {
+                                            Group group = matches[0].Groups["prefix"];
+                                            if (group.Success)
+                                                prefix = matches[0].Groups["prefix"].Value.ToString();
+
+                                            group = matches[0].Groups["quantity"];
+                                            if (group.Success)
+                                            {
+                                                if (matches[0].Groups["quantity"].Value.ToString().Contains("/"))
+                                                {
+                                                    quantity = FractionToDouble(matches[0].Groups["quantity"].Value.ToString());
+                                                }
+                                                else
+                                                {
+                                                    quantity = Convert.ToDouble(matches[0].Groups["quantity"].Value.ToString());
+                                                }
+                                            }
+
+                                            group = matches[0].Groups["unitOfMeasurement"];
+                                            if (group.Success)
+                                                unitOfMeasurement = (Ingredient.UnitOfMeasurements)Enum.Parse(typeof(Ingredient.UnitOfMeasurements), matches[0].Groups["unitOfMeasurement"].Value.ToString(), true);
+
+                                            group = matches[0].Groups["name"];
+                                            if (group.Success)
+                                            {
+                                                if (string.IsNullOrEmpty(prefix))
+                                                {
+                                                    name = matches[0].Groups["name"].Value.ToString();
+                                                }
+                                                else
+                                                {
+                                                    name = $"{prefix} {matches[0].Groups["name"].Value}";
+                                                }
+                                            }
+                                        }
+
+                                        Ingredient newIngredient = new Ingredient()
+                                        {
+                                            Id = Guid.NewGuid().ToString(),
+                                            Index = Convert.ToUInt32(childNode.NextSibling.ChildNodes.IndexOf(listNode)),
+                                            Name = name,
+                                            UnitOfMeasurement = unitOfMeasurement,
+                                            Quantity = quantity
+                                        };
+
+                                        recipe.Ingredients.Add(newIngredient);
+                                    }
+                                    else if (attribute.Name.ToLower() == "class" && attribute.Value.ToLower() == "header")
+                                    {
+                                        Ingredient newIngredient = new Ingredient()
+                                        {
+                                            Id = Guid.NewGuid().ToString(),
+                                            Index = Convert.ToUInt32(childNode.NextSibling.ChildNodes.IndexOf(listNode)),
+                                            Name = listNode.InnerText,
+                                            UnitOfMeasurement = Ingredient.UnitOfMeasurements.Header,
+                                            Quantity = 0
+                                        };
+
+                                        recipe.Ingredients.Add(newIngredient);
+                                    }
+                                }
+                            }
+                        }
                     }
-                    else if(childNode.InnerText == "Instructions")
+                    else if (childNode.InnerText == "Instructions")
                     {
+                        if (childNode.NextSibling.Name == "ol")
+                        {
+                            foreach (var listNode in childNode.NextSibling.ChildNodes)
+                            {
+                                RecipeInstruction newInstruction = new RecipeInstruction()
+                                {
+                                    Id = Guid.NewGuid().ToString(),
+                                    Index = Convert.ToUInt32(childNode.NextSibling.ChildNodes.IndexOf(listNode)) + 1,
+                                    Instruction = listNode.InnerText
+                                };
 
+                                recipe.Instructions.Add(newInstruction);
+                            }
+                        }
                     }
                 }
             }
