@@ -1,5 +1,6 @@
 ﻿using HtmlAgilityPack;
 using Microsoft.Toolkit.Uwp;
+using RecipeBox.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -147,7 +148,7 @@ namespace RecipeBox.Pages
             saveDialog.IsEnabled = false;
         }
 
-        double FractionToDouble(string fraction)
+        private double FractionToDouble(string fraction)
         {
             double result = 0.0;
 
@@ -179,6 +180,31 @@ namespace RecipeBox.Pages
             }
 
             throw new FormatException("Not a valid fraction.");
+        }
+
+        private void RecalculateIndexes(string listToRecalculate)
+        {
+            if(listToRecalculate.Equals("ingredients"))
+            {
+                foreach(Ingredient ingredient in recipe.Ingredients)
+                {
+                    ingredient.Index = Convert.ToUInt32(recipe.Ingredients.IndexOf(ingredient));
+                }
+            }
+            else if (listToRecalculate.Equals("instructions"))
+            {
+                foreach (RecipeInstruction instruction in recipe.Instructions)
+                {
+                    instruction.Index = Convert.ToUInt32(recipe.Instructions.IndexOf(instruction));
+                }
+            }
+            else if (listToRecalculate.Equals("notes"))
+            {
+                foreach (RecipeNote note in recipe.Notes)
+                {
+                    note.Index = Convert.ToUInt32(recipe.Notes.IndexOf(note));
+                }
+            }
         }
 
         #region Event Handlers
@@ -267,9 +293,21 @@ namespace RecipeBox.Pages
             recipe.Ingredients.Add(new Ingredient(Guid.NewGuid().ToString(), index, AddRecipeIngredientNameTextBox.Text, quantity, unitOfMeasurement));
         }
 
+        private async void IngredientsContextFlyoutEditItem_Click(object sender, RoutedEventArgs e)
+        {
+            EditIngredientDialogBox dialog = new EditIngredientDialogBox();
+            var result = await dialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                //ContentDialogResult.Text = "User saved their work";
+            }
+        }
+
         private void RecipeIngredientsDeleteButton_Click(object sender, RoutedEventArgs e)
         {
             recipe.Ingredients.RemoveAt(RecipeIngredientsListView.Items.IndexOf(RecipeIngredientsListView.SelectedItem));
+            RecalculateIndexes("ingredients");
         }
 
         private void RecipeIngredientsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -289,9 +327,15 @@ namespace RecipeBox.Pages
             recipe.Instructions.Add(new RecipeInstruction(index, AddRecipeInstructionTextBox.Text));
         }
 
+        private async void InstructionsContextFlyoutEditItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void RecipeInstructionsDeleteButton_Click(object sender, RoutedEventArgs e)
         {
             recipe.Instructions.RemoveAt(RecipeInstructionsListView.Items.IndexOf(RecipeInstructionsListView.SelectedItem));
+            RecalculateIndexes("instructions");
         }
 
         private void RecipeInstructionsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -311,9 +355,15 @@ namespace RecipeBox.Pages
             recipe.Notes.Add(new RecipeNote(index, AddRecipeNoteTextBox.Text));
         }
 
+        private async void NotesContextFlyoutEditItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void RecipeNotesDeleteButton_Click(object sender, RoutedEventArgs e)
         {
             recipe.Notes.RemoveAt(RecipeNotesListView.Items.IndexOf(RecipeNotesListView.SelectedItem));
+            RecalculateIndexes("notes");
         }
 
         private void RecipeNotesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

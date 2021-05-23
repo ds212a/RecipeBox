@@ -1,0 +1,22 @@
+﻿<ContentDialog
+    x:Class="RecipeBox.Controls.EditIngredientDialogBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    Title="Edit Ingredient"
+    PrimaryButtonText="Save"
+    CloseButtonText="Cancel"
+    DefaultButton="Primary">
+
+    <RelativePanel x:Name="EditRecipeIngredientPanel">
+        <muxc:NumberBox x:Name="EditRecipeIngredientQuantityNumberBox" Header="Quantity" PlaceholderText="0.00" TabIndex="10" Padding="0,0,0,16" Width="65" HorizontalAlignment="Left" AcceptsExpression="False" >
+            <FlyoutBase.AttachedFlyout>
+                <Flyout>
+                    <TextBlock Text="Please enter a quantity." />
+                </Flyout>
+            </FlyoutBase.AttachedFlyout>
+        </muxc:NumberBox>
+        <ComboBox x:Name="EditRecipeIngredientUnitOfMeasurementComboBox" Header="Unit of Measurement" TabIndex="11" Padding="0,0,0,20" Margin="10,0,0,0" Width="135" HorizontalAlignment="Left" RelativePanel.RightOf="EditRecipeIngredientQuantityNumberBox" />
+        <TextBox x:Name="EditRecipeIngredientNameTextBox" Header="Name" TabIndex="12" Padding="0,0,0,16" Margin="10,0,0,0" Width="180" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" InputScope="Text" RelativePanel.RightOf="EditRecipeIngredientUnitOfMeasurementComboBox" />
+    </RelativePanel>
+</ContentDialog>

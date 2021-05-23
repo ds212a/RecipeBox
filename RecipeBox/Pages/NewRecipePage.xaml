@@ -112,6 +112,12 @@
                     </StackPanel>
 
                     <ListView x:Name="RecipeIngredientsListView" ItemsSource="{Binding Ingredients}" SelectionMode="Single" RelativePanel.Below="RecipeIngredientsButtonPanel" SelectionChanged="RecipeIngredientsListView_SelectionChanged">
+                        <ListView.ContextFlyout>
+                            <MenuFlyout x:Name="IngredientsContextFlyout">
+                                <MenuFlyoutItem x:Name="IngredientsContextFlyoutEditItem" Text="Edit" Icon="Edit" Click="IngredientsContextFlyoutEditItem_Click" />
+                                <MenuFlyoutItem x:Name="IngredientsContextFlyoutDeleteItem" Text="Delete" Icon="Delete" Click="RecipeIngredientsDeleteButton_Click" />
+                            </MenuFlyout>
+                        </ListView.ContextFlyout>
                         <ListView.ItemTemplate>
                             <DataTemplate x:Name="RecipeIngredientsSingleLineDataTemplate" x:DataType="recipeBox:Ingredient">
                                 <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Name}">
@@ -135,6 +141,12 @@
                     </StackPanel>
 
                     <ListView x:Name="RecipeInstructionsListView" ItemsSource="{Binding Instructions}" SelectionMode="Single" RelativePanel.Below="RecipeInstructionsButtonPanel" SelectionChanged="RecipeInstructionsListView_SelectionChanged">
+                        <ListView.ContextFlyout>
+                            <MenuFlyout x:Name="InstructionsContextFlyout">
+                                <MenuFlyoutItem x:Name="InstructionsContextFlyoutEditItem" Text="Edit" Icon="Edit" Click="InstructionsContextFlyoutEditItem_Click" />
+                                <MenuFlyoutItem x:Name="InstructionsContextFlyoutDeleteItem" Text="Delete" Icon="Delete" Click="RecipeInstructionsDeleteButton_Click" />
+                            </MenuFlyout>
+                        </ListView.ContextFlyout>
                         <ListView.ItemTemplate>
                             <DataTemplate x:Name="RecipeInstructionsSingleLineDataTemplate" x:DataType="recipeBox:RecipeInstruction">
                                 <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Instruction}">
@@ -154,6 +166,12 @@
                     </StackPanel>
 
                     <ListView x:Name="RecipeNotesListView" ItemsSource="{Binding Notes}" SelectionMode="Single" RelativePanel.Below="RecipeNotesButtonPanel" SelectionChanged="RecipeNotesListView_SelectionChanged">
+                        <ListView.ContextFlyout>
+                            <MenuFlyout x:Name="NotesContextFlyout">
+                                <MenuFlyoutItem x:Name="NotesContextFlyoutEditItem" Text="Edit" Icon="Edit" Click="NotesContextFlyoutEditItem_Click" />
+                                <MenuFlyoutItem x:Name="NotesContextFlyoutDeleteItem" Text="Delete" Icon="Delete" Click="RecipeNotesDeleteButton_Click" />
+                            </MenuFlyout>
+                        </ListView.ContextFlyout>
                         <ListView.ItemTemplate>
                             <DataTemplate x:Name="RecipeNotesSingleLineDataTemplate" x:DataType="recipeBox:RecipeNote">
                                 <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Note}">
