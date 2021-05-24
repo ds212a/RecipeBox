@@ -78,11 +78,13 @@ namespace RecipeBox.Pages
             {
                 recipe = new Recipe();
                 recipe.NeedsSaved = true;
+                TitleTextBlock.Text = "New Recipe";
             }
             else
             {
                 editingRecipe = true;
                 recipe.NeedsSaved = false;
+                TitleTextBlock.Text = recipe.Name;
             }
 
             if (Frame.CanGoBack)
