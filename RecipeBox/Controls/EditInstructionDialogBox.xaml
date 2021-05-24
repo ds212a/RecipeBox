@@ -1,0 +1,14 @@
+﻿<ContentDialog
+    x:Class="RecipeBox.Controls.EditInstructionDialogBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Edit Instruction"
+    PrimaryButtonText="Save"
+    CloseButtonText="Cancel"
+    DefaultButton="Primary"
+    PrimaryButtonClick="EditInstructionDialog_PrimaryButtonClick">
+
+    <RelativePanel x:Name="EditRecipeInstructionPanel">
+        <TextBox x:Name="EditRecipeInstructionTextBox" Height="250" Width="500" TextWrapping="Wrap" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Enabled" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" />
+    </RelativePanel>
+</ContentDialog>

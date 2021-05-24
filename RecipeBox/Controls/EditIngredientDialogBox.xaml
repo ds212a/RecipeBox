@@ -6,7 +6,8 @@
     Title="Edit Ingredient"
     PrimaryButtonText="Save"
     CloseButtonText="Cancel"
-    DefaultButton="Primary">
+    DefaultButton="Primary"
+    PrimaryButtonClick="EditIngredientDialog_PrimaryButtonClick">
 
     <RelativePanel x:Name="EditRecipeIngredientPanel">
         <muxc:NumberBox x:Name="EditRecipeIngredientQuantityNumberBox" Header="Quantity" PlaceholderText="0.00" TabIndex="10" Padding="0,0,0,16" Width="65" HorizontalAlignment="Left" AcceptsExpression="False" >

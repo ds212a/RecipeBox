@@ -122,6 +122,12 @@
     <Compile Include="Controls\EditIngredientDialogBox.xaml.cs">
       <DependentUpon>EditIngredientDialogBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\EditInstructionDialogBox.xaml.cs">
+      <DependentUpon>EditInstructionDialogBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EditNoteDialogBox.xaml.cs">
+      <DependentUpon>EditNoteDialogBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\IngredientToStringConverter.cs" />
     <Compile Include="Converters\TimeSpanToStringConverter.cs" />
     <Compile Include="Ingredient.cs" />
@@ -173,6 +179,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Controls\EditIngredientDialogBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\EditInstructionDialogBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\EditNoteDialogBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -295,18 +295,43 @@ namespace RecipeBox.Pages
 
         private async void IngredientsContextFlyoutEditItem_Click(object sender, RoutedEventArgs e)
         {
-            EditIngredientDialogBox dialog = new EditIngredientDialogBox();
-            var result = await dialog.ShowAsync();
+            MenuFlyoutItem menuFlyout = sender as MenuFlyoutItem;
+            Ingredient originalIngredient = menuFlyout.DataContext as Ingredient;
+            EditIngredientDialogBox editIngredientDialog = new EditIngredientDialogBox(originalIngredient);
+            var result = await editIngredientDialog.ShowAsync();
 
             if (result == ContentDialogResult.Primary)
             {
-                //ContentDialogResult.Text = "User saved their work";
+                int index = recipe.Ingredients.IndexOf(originalIngredient);
+                recipe.Ingredients.RemoveAt(index);
+                Ingredient updatedIngredient = new Ingredient()
+                {
+                    Id = editIngredientDialog.Ingredient.Id,
+                    Index = editIngredientDialog.Ingredient.Index,
+                    Name = editIngredientDialog.Ingredient.Name,
+                    Quantity = editIngredientDialog.Ingredient.Quantity,
+                    UnitOfMeasurement = editIngredientDialog.Ingredient.UnitOfMeasurement
+                };
+
+                recipe.Ingredients.Insert(index, updatedIngredient);
             }
         }
 
         private void RecipeIngredientsDeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            recipe.Ingredients.RemoveAt(RecipeIngredientsListView.Items.IndexOf(RecipeIngredientsListView.SelectedItem));
+            int index = 0;
+            MenuFlyoutItem menuFlyout = sender as MenuFlyoutItem;
+            if(menuFlyout != null)
+            {
+                Ingredient ingredientToRemove = menuFlyout.DataContext as Ingredient;
+                index = recipe.Ingredients.IndexOf(ingredientToRemove);
+            }
+            else
+            {
+                index = RecipeIngredientsListView.Items.IndexOf(RecipeIngredientsListView.SelectedItem);
+            }
+            
+            recipe.Ingredients.RemoveAt(index);
             RecalculateIndexes("ingredients");
         }
 
@@ -329,12 +354,41 @@ namespace RecipeBox.Pages
 
         private async void InstructionsContextFlyoutEditItem_Click(object sender, RoutedEventArgs e)
         {
+            MenuFlyoutItem menuFlyout = sender as MenuFlyoutItem;
+            RecipeInstruction originalInstruction = menuFlyout.DataContext as RecipeInstruction;
+            EditInstructionDialogBox editInstructionDialog = new EditInstructionDialogBox(originalInstruction);
+            var result = await editInstructionDialog.ShowAsync();
 
+            if (result == ContentDialogResult.Primary)
+            {
+                int index = recipe.Instructions.IndexOf(originalInstruction);
+                recipe.Instructions.RemoveAt(index);
+                RecipeInstruction updatedInstruction = new RecipeInstruction()
+                {
+                    Id = editInstructionDialog.Instruction.Id,
+                    Index = editInstructionDialog.Instruction.Index,
+                    Instruction = editInstructionDialog.Instruction.Instruction
+                };
+
+                recipe.Instructions.Insert(index, updatedInstruction);
+            }
         }
 
         private void RecipeInstructionsDeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            recipe.Instructions.RemoveAt(RecipeInstructionsListView.Items.IndexOf(RecipeInstructionsListView.SelectedItem));
+            int index = 0;
+            MenuFlyoutItem menuFlyout = sender as MenuFlyoutItem;
+            if (menuFlyout != null)
+            {
+                RecipeInstruction instructionToRemove = menuFlyout.DataContext as RecipeInstruction;
+                index = recipe.Instructions.IndexOf(instructionToRemove);
+            }
+            else
+            {
+                index = RecipeInstructionsListView.Items.IndexOf(RecipeInstructionsListView.SelectedItem);
+            }
+
+            recipe.Instructions.RemoveAt(index);
             RecalculateIndexes("instructions");
         }
 
@@ -357,12 +411,41 @@ namespace RecipeBox.Pages
 
         private async void NotesContextFlyoutEditItem_Click(object sender, RoutedEventArgs e)
         {
+            MenuFlyoutItem menuFlyout = sender as MenuFlyoutItem;
+            RecipeNote originalNote = menuFlyout.DataContext as RecipeNote;
+            EditNoteDialogBox editNoteDialog = new EditNoteDialogBox(originalNote);
+            var result = await editNoteDialog.ShowAsync();
 
+            if (result == ContentDialogResult.Primary)
+            {
+                int index = recipe.Notes.IndexOf(originalNote);
+                recipe.Notes.RemoveAt(index);
+                RecipeNote updatedNote = new RecipeNote()
+                {
+                    Id = editNoteDialog.Note.Id,
+                    Index = editNoteDialog.Note.Index,
+                    Note = editNoteDialog.Note.Note
+                };
+
+                recipe.Notes.Insert(index, updatedNote);
+            }
         }
 
         private void RecipeNotesDeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            recipe.Notes.RemoveAt(RecipeNotesListView.Items.IndexOf(RecipeNotesListView.SelectedItem));
+            int index = 0;
+            MenuFlyoutItem menuFlyout = sender as MenuFlyoutItem;
+            if (menuFlyout != null)
+            {
+                RecipeNote noteToRemove = menuFlyout.DataContext as RecipeNote;
+                index = recipe.Notes.IndexOf(noteToRemove);
+            }
+            else
+            {
+                index = RecipeNotesListView.Items.IndexOf(RecipeNotesListView.SelectedItem);
+            }
+
+            recipe.Notes.RemoveAt(index);
             RecalculateIndexes("notes");
         }
 
