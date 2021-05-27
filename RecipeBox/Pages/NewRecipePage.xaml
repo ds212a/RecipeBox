@@ -111,7 +111,7 @@
                         <AppBarButton x:Name="RecipeIngredientDeleteButton" Style="{StaticResource AppBarButtonRevealStyle}" IsEnabled="false" Icon="Delete" Label="Delete ingredient" Click="RecipeIngredientsDeleteButton_Click" />
                     </StackPanel>
 
-                    <ListView x:Name="RecipeIngredientsListView" ItemsSource="{Binding Ingredients}" SelectionMode="Single" RelativePanel.Below="RecipeIngredientsButtonPanel" SelectionChanged="RecipeIngredientsListView_SelectionChanged">
+                    <ListView x:Name="RecipeIngredientsListView" ItemsSource="{Binding Ingredients}" SelectionMode="Single" CanReorderItems="True" CanDragItems="True" AllowDrop="True" RelativePanel.Below="RecipeIngredientsButtonPanel" SelectionChanged="RecipeIngredientsListView_SelectionChanged" DragItemsCompleted="RecipeIngredientsListView_DragItemsCompleted">
                         <ListView.ItemTemplate>
                             <DataTemplate x:Name="RecipeIngredientsSingleLineDataTemplate" x:DataType="recipeBox:Ingredient">
                                 <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Name}">
@@ -140,7 +140,7 @@
                         <AppBarButton x:Name="RecipeInstructionDeleteButton" Style="{StaticResource AppBarButtonRevealStyle}" IsEnabled="false" Icon="Delete" Label="Delete instruction" Click="RecipeInstructionsDeleteButton_Click" />
                     </StackPanel>
 
-                    <ListView x:Name="RecipeInstructionsListView" ItemsSource="{Binding Instructions}" SelectionMode="Single" RelativePanel.Below="RecipeInstructionsButtonPanel" SelectionChanged="RecipeInstructionsListView_SelectionChanged">
+                    <ListView x:Name="RecipeInstructionsListView" ItemsSource="{Binding Instructions}" SelectionMode="Single" CanReorderItems="True" CanDragItems="True" AllowDrop="True" RelativePanel.Below="RecipeInstructionsButtonPanel" SelectionChanged="RecipeInstructionsListView_SelectionChanged" DragItemsCompleted="RecipeInstructionsListView_DragItemsCompleted">
                         <ListView.ItemTemplate>
                             <DataTemplate x:Name="RecipeInstructionsSingleLineDataTemplate" x:DataType="recipeBox:RecipeInstruction">
                                 <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Instruction}">
@@ -166,7 +166,7 @@
                         <AppBarButton x:Name="RecipeNoteDeleteButton" Style="{StaticResource AppBarButtonRevealStyle}" IsEnabled="false" Icon="Delete" Label="Delete note" Click="RecipeNotesDeleteButton_Click" />
                     </StackPanel>
 
-                    <ListView x:Name="RecipeNotesListView" ItemsSource="{Binding Notes}" SelectionMode="Single" RelativePanel.Below="RecipeNotesButtonPanel" SelectionChanged="RecipeNotesListView_SelectionChanged">
+                    <ListView x:Name="RecipeNotesListView" ItemsSource="{Binding Notes}" SelectionMode="Single" CanReorderItems="True" CanDragItems="True" AllowDrop="True" RelativePanel.Below="RecipeNotesButtonPanel" SelectionChanged="RecipeNotesListView_SelectionChanged" DragItemsCompleted="RecipeNotesListView_DragItemsCompleted">
                         <ListView.ItemTemplate>
                             <DataTemplate x:Name="RecipeNotesSingleLineDataTemplate" x:DataType="recipeBox:RecipeNote">
                                 <StackPanel Orientation="Horizontal" AutomationProperties.Name="{x:Bind Note}">

@@ -197,7 +197,7 @@ namespace RecipeBox.Pages
             {
                 foreach (RecipeInstruction instruction in recipe.Instructions)
                 {
-                    instruction.Index = Convert.ToUInt32(recipe.Instructions.IndexOf(instruction));
+                    instruction.Index = Convert.ToUInt32(recipe.Instructions.IndexOf(instruction)) + 1;
                 }
             }
             else if (listToRecalculate.Equals("notes"))
@@ -348,6 +348,11 @@ namespace RecipeBox.Pages
             }
         }
 
+        private void RecipeIngredientsListView_DragItemsCompleted(ListViewBase sender, DragItemsCompletedEventArgs args)
+        {
+            RecalculateIndexes("ingredients");
+        }
+
         private void RecipeInstructionsAddButton_Click(object sender, RoutedEventArgs e)
         {
             uint index = Convert.ToUInt16(RecipeInstructionsListView.Items.Count + 1);
@@ -402,6 +407,22 @@ namespace RecipeBox.Pages
                     RecipeInstructionDeleteButton.IsEnabled = true;
                 else
                     RecipeInstructionDeleteButton.IsEnabled = false;
+            }
+        }
+
+        private void RecipeInstructionsListView_DragItemsCompleted(ListViewBase sender, DragItemsCompletedEventArgs args)
+        {
+            RecalculateIndexes("instructions");
+            List<RecipeInstruction> tempInstructions = recipe.Instructions.ToList();
+            recipe.Instructions.Clear();
+            foreach(RecipeInstruction instruction in tempInstructions)
+            {
+                recipe.Instructions.Add(new RecipeInstruction()
+                {
+                    Id = instruction.Id,
+                    Index = instruction.Index,
+                    Instruction = instruction.Instruction
+                });
             }
         }
 
@@ -460,6 +481,11 @@ namespace RecipeBox.Pages
                 else
                     RecipeNoteDeleteButton.IsEnabled = false;
             }
+        }
+
+        private void RecipeNotesListView_DragItemsCompleted(ListViewBase sender, DragItemsCompletedEventArgs args)
+        {
+            RecalculateIndexes("notes");
         }
 
         private async void getRecipeFromUrlButton_Click(object sender, RoutedEventArgs e)
