@@ -1,26 +1,17 @@
 ﻿using HtmlAgilityPack;
-using Microsoft.Toolkit.Uwp;
 using RecipeBox.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -186,9 +177,9 @@ namespace RecipeBox.Pages
 
         private void RecalculateIndexes(string listToRecalculate)
         {
-            if(listToRecalculate.Equals("ingredients"))
+            if (listToRecalculate.Equals("ingredients"))
             {
-                foreach(Ingredient ingredient in recipe.Ingredients)
+                foreach (Ingredient ingredient in recipe.Ingredients)
                 {
                     ingredient.Index = Convert.ToUInt32(recipe.Ingredients.IndexOf(ingredient));
                 }
@@ -217,7 +208,7 @@ namespace RecipeBox.Pages
                 string guid = Guid.NewGuid().ToString();
                 recipe.Id = guid;
             }
-            
+
             recipe.Name = RecipeName.Text;
             recipe.Description = RecipeDescription.Text;
 
@@ -323,7 +314,7 @@ namespace RecipeBox.Pages
         {
             int index = 0;
             MenuFlyoutItem menuFlyout = sender as MenuFlyoutItem;
-            if(menuFlyout != null)
+            if (menuFlyout != null)
             {
                 Ingredient ingredientToRemove = menuFlyout.DataContext as Ingredient;
                 index = recipe.Ingredients.IndexOf(ingredientToRemove);
@@ -332,7 +323,7 @@ namespace RecipeBox.Pages
             {
                 index = RecipeIngredientsListView.Items.IndexOf(RecipeIngredientsListView.SelectedItem);
             }
-            
+
             recipe.Ingredients.RemoveAt(index);
             RecalculateIndexes("ingredients");
         }
@@ -415,7 +406,7 @@ namespace RecipeBox.Pages
             RecalculateIndexes("instructions");
             List<RecipeInstruction> tempInstructions = recipe.Instructions.ToList();
             recipe.Instructions.Clear();
-            foreach(RecipeInstruction instruction in tempInstructions)
+            foreach (RecipeInstruction instruction in tempInstructions)
             {
                 recipe.Instructions.Add(new RecipeInstruction()
                 {
@@ -540,33 +531,33 @@ namespace RecipeBox.Pages
             var doc = web.Load(url);
             var metaNodes = doc.DocumentNode.SelectNodes("//head/meta");
 
-            foreach(var metaNode in metaNodes)
+            foreach (var metaNode in metaNodes)
             {
-                foreach(var attribute in metaNode.Attributes.AttributesWithName("name"))
+                foreach (var attribute in metaNode.Attributes.AttributesWithName("name"))
                 {
                     if (attribute.Value.ToLower().Equals("description"))
                     {
-                        foreach(var att in metaNode.Attributes.AttributesWithName("content"))
+                        foreach (var att in metaNode.Attributes.AttributesWithName("content"))
                         {
                             recipe.Description = att.Value;
-                        }    
+                        }
                     }
                 }
             }
 
             var bodyNodes = doc.DocumentNode.SelectNodes("//body/div/div/div/article/section");
-            foreach(var childNode in bodyNodes[0].ChildNodes)
+            foreach (var childNode in bodyNodes[0].ChildNodes)
             {
                 if (childNode.Name == "h2")
                     recipe.Name = childNode.InnerText;
-                
-                if(childNode.Name == "p")
+
+                if (childNode.Name == "p")
                 {
                     if (childNode.InnerText.StartsWith("Categories:"))
                     {
                         string categories = childNode.InnerText.Replace("Categories: ", "");
 
-                        if(categories.Contains("Main Dish"))
+                        if (categories.Contains("Main Dish"))
                         {
                             recipe.Categories.Add("Main Dish");
                             categories = categories.Replace("Main Dish", "");
@@ -574,13 +565,13 @@ namespace RecipeBox.Pages
 
                         foreach (string category in categories.Split())
                         {
-                            if(!string.IsNullOrEmpty(category))
+                            if (!string.IsNullOrEmpty(category))
                                 recipe.Categories.Add(category);
                         }
                     }
                     else if (childNode.InnerText.StartsWith("Cuisine:"))
                     {
-                        foreach(string cuisine in childNode.InnerText.Split())
+                        foreach (string cuisine in childNode.InnerText.Split())
                         {
                             if (cuisine.StartsWith("Cuisine:"))
                                 continue;
@@ -593,9 +584,9 @@ namespace RecipeBox.Pages
                         int hours = 0;
                         int minutes = 0;
                         int seconds = 0;
-                        
+
                         MatchCollection matches = timeRegEx.Matches(childNode.InnerText);
-                        if(matches.Count > 0)
+                        if (matches.Count > 0)
                         {
                             Group group = matches[0].Groups["hours"];
                             if (group.Success)
@@ -605,7 +596,7 @@ namespace RecipeBox.Pages
                             if (group.Success)
                                 minutes = Convert.ToInt32(matches[0].Groups["minutes"].Value.Split()[0]);
                         }
-                        
+
                         recipe.PrepTime = new TimeSpan(hours, minutes, seconds);
                     }
                     else if (childNode.InnerText.StartsWith("Cook Time:"))
@@ -613,7 +604,7 @@ namespace RecipeBox.Pages
                         int hours = 0;
                         int minutes = 0;
                         int seconds = 0;
-                        
+
                         MatchCollection matches = timeRegEx.Matches(childNode.InnerText);
                         if (matches.Count > 0)
                         {
@@ -634,7 +625,7 @@ namespace RecipeBox.Pages
                     }
                 }
 
-                if(childNode.Name == "h3")
+                if (childNode.Name == "h3")
                 {
                     if (childNode.InnerText == "Ingredients")
                     {

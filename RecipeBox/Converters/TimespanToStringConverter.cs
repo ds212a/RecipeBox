@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
 
 namespace RecipeBox.Converters
@@ -21,12 +17,12 @@ namespace RecipeBox.Converters
                 span.Duration().Hours > 0 ? string.Format("{0,2:D2}", span.Hours) : "00",
                 span.Duration().Minutes > 0 ? string.Format("{0,2:D2}", span.Minutes) : "00");
 
-            if (formatted.EndsWith(", ")) 
+            if (formatted.EndsWith(", "))
                 formatted = formatted.Substring(0, formatted.Length - 2);
 
             if (string.IsNullOrEmpty(formatted))
                 formatted = "00:00";
-            
+
             return formatted;
         }
 
